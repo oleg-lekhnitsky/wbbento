@@ -1,0 +1,1 @@
+{"name":"wb-bento-studio","private":true,"type":"module","scripts":{"dev":"nuxt dev --host 0.0.0.0","build":"nuxt build","generate":"nuxt generate","preview":"nuxt preview"},"dependencies":{"nuxt":"^3.17.5","vue":"^3.5.16","html-to-image":"^1.11.13"}}

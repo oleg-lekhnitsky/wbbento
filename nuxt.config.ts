@@ -1,0 +1,1 @@
+export default defineNuxtConfig({ compatibilityDate: '2025-05-15', devtools: { enabled: false }, ssr: false, css: ['~/assets/css/main.css'], app: { head: { title: 'WB Bento — Partner creative studio', meta: [{name:'description',content:'Create on-brand partner creatives with editable bento layouts.'}] } } })
