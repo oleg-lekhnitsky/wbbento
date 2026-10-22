@@ -121,3 +121,18 @@ test('reference URLs default to the production website independently of the edit
  assert.ok(brief.includes('"reference_url": "https://wbbento.vercel.app/assets/figma/driver-blue.png"'))
  assert.ok(brief.includes('https://wbbento.vercel.app/assets/figma/cars/front-left-no-plate.png'))
 })
+
+test('the selected phone reference is authoritative rather than a first-reference fallback',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'driver',driverStyle:'phone',age:'40',nationality:'Uzbek'})
+ const request=JSON.parse(brief.split('IMAGE REQUESTS\n')[1].split('\n\nSHARED PHOTO ART DIRECTION')[0])[0]
+ assert.equal(request.reference_style,'phone')
+ assert.equal(request.reference_name,'Parked driver with phone')
+ assert.equal(request.reference_url,'https://wbbento.vercel.app/assets/figma/driver-phone.png')
+ assert.ok(request.prompt.includes('safely parked car'))
+ assert.ok(request.prompt.includes('smartphone toward the camera'))
+ assert.ok(brief.includes('Never use stock search photos, unrelated thumbnails'))
+ assert.ok(brief.includes('Choosing a copy variant or another layout does NOT change the selected photo reference'))
+ assert.ok(!brief.includes('starting preference'))
+ const catalog=JSON.parse(brief.split('REFERENCE IMAGE URLS\n')[1].split('\n\nStart by')[0])
+ assert.equal(catalog.driver_styles[0].style,'phone');assert.equal(catalog.driver_styles[0].selected,true)
+})

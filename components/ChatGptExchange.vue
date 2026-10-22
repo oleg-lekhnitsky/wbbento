@@ -42,6 +42,7 @@ const reference=computed(()=>imageMode.value==='car'?(angles.find(a=>a.id===prop
 const copied=ref(false)
 let copiedTimer:ReturnType<typeof setTimeout>|undefined
 onBeforeUnmount(()=>clearTimeout(copiedTimer))
+watch(brief,()=>{copied.value=false;clearTimeout(copiedTimer)})
 const imageStep=ref<HTMLElement>()
 const canApply=computed(()=>pending.value && pending.value.images.every((i:any)=>uploads.value[i.slot]||kept.value.includes(i.slot)))
 watch(resultText,()=>{pending.value=undefined;uploads.value={};kept.value=[];status.value=''})
