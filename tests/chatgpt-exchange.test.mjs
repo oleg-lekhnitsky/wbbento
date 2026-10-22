@@ -139,12 +139,26 @@ test('the selected phone reference is authoritative rather than a first-referenc
  assert.equal(catalog.driver_styles[0].style,'phone');assert.equal(catalog.driver_styles[0].selected,true)
 })
 
-test('embeds only the selected reference in image request metadata, leaving project assets unchanged',()=>{
- const project=createProject(),brief=createChatGptBrief(project,{imageMode:'driver',driverStyle:'phone',referenceDataUrl:pixel})
+
+test('selected car angle controls the prompt, reference URL and copied project',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'car',carAngle:'rear-right'})
+ const request=JSON.parse(brief.split('IMAGE REQUESTS\n')[1].split('\n\nSHARED PHOTO ART DIRECTION')[0])[0]
+ assert.equal(request.reference_angle,'rear-right')
+ assert.equal(request.reference_url,'https://wbbento.vercel.app/assets/figma/cars/rear-right.png')
+ assert.ok(request.prompt.includes('rear-right three-quarter view'))
+})
+
+test('car requests ask for reference editing and original livery preservation',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'car',carAngle:'side-right'})
  const image=JSON.parse(brief.split('IMAGE REQUESTS\n')[1].split('\n\nSHARED PHOTO ART DIRECTION')[0])[0]
- assert.equal(image.reference_data_url,pixel);assert.equal(image.reference_style,'phone')
- assert.ok(brief.includes('Never echo the base64 back in the final JSON'))
- assert.ok(brief.includes('decode it into an image file'))
- assert.ok(!project.data.image.startsWith('data:'))
- assert.throws(()=>createChatGptBrief(project,{imageMode:'car',referenceDataUrl:'https://example.com/image.png'}),/Invalid embedded/)
+ assert.equal(image.operation,'edit-reference')
+ assert.ok(image.prompt.includes('image-editing/background-replacement task'))
+ assert.ok(image.prompt.includes('retain/composite the original car pixels'))
+ assert.ok(brief.includes('not text-to-image redrawing'))
+})
+
+test('brief uses reference links without base64 reference instructions',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'driver'})
+ assert.ok(!brief.includes('reference_data_url'))
+ assert.ok(brief.includes('reference_url'))
 })

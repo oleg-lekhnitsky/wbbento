@@ -25,10 +25,12 @@ async function goStep(value:number){
 const selectedChanges=ref(['copy'])
 const suggestLayout=ref(true)
 const driverStyle=ref(props.project.data.imagePrompt.style)
+const carAngle=ref(props.project.data.carPrompt.angle)
 const language=ref(''),cities=ref(props.project.data.city),offer=ref(''),partner=ref(props.project.data.partner),website=ref(props.project.data.website),phone=ref(props.project.data.phone),targetFormat=ref(formatIds[props.project.format])
 watch(()=>props.project,(next,previous)=>{
  if(!previous)return
  for(const [field,key] of [[cities,'city'],[partner,'partner'],[website,'website'],[phone,'phone']] as const){if(field.value===previous.data[key])field.value=next.data[key]}
+ if(carAngle.value===previous.data.carPrompt.angle)carAngle.value=next.data.carPrompt.angle
  if(driverStyle.value===previous.data.imagePrompt.style)driverStyle.value=next.data.imagePrompt.style
  if(age.value===previous.data.imagePrompt.age)age.value=next.data.imagePrompt.age
  if(nationality.value===previous.data.imagePrompt.nationality)nationality.value=next.data.imagePrompt.nationality
@@ -36,12 +38,10 @@ watch(()=>props.project,(next,previous)=>{
 })
 function toggleChange(id:string){selectedChanges.value=selectedChanges.value.includes(id)?selectedChanges.value.filter(value=>value!==id):[...selectedChanges.value,id]}
 const changes=computed(()=>Object.fromEntries(selectedChanges.value.map(id=>[id,id==='copy'?{language:language.value}:id==='cities'?{cities:cities.value}:id==='offer'?{offer:offer.value}:id==='partner'?{partner:partner.value,website:website.value,phone:phone.value}:{format:targetFormat.value}])))
-const embedReference=ref(false),embeddedReference=ref(''),preparingBrief=ref(false)
-watch([embedReference,driverStyle,imageMode],()=>{embeddedReference.value=''})
+const preparingBrief=ref(false)
 const siteOrigin=REFERENCE_SITE_ORIGIN
-const brief=computed(()=>createChatGptBrief(props.project,{referenceDataUrl:embedReference.value&&imageMode.value!=='keep'?embeddedReference.value:undefined,driverStyle:driverStyle.value,suggestLayout:suggestLayout.value,siteOrigin,request:request.value,changes:changes.value,imageMode:imageMode.value,age:age.value,nationality:nationality.value}))
-const reference=computed(()=>imageMode.value==='car'?(angles.find(a=>a.id===props.project.data.carPrompt.angle)||angles[0]).src:'/assets/figma/'+(driverPhotoStyles.find(s=>s.id===driverStyle.value)||driverPhotoStyles[0]).image+'.png')
-watch(reference,()=>{embeddedReference.value=''})
+const brief=computed(()=>createChatGptBrief(props.project,{carAngle:carAngle.value,driverStyle:driverStyle.value,suggestLayout:suggestLayout.value,siteOrigin,request:request.value,changes:changes.value,imageMode:imageMode.value,age:age.value,nationality:nationality.value}))
+const reference=computed(()=>imageMode.value==='car'?(angles.find(a=>a.id===carAngle.value)||angles[0]).src:'/assets/figma/'+(driverPhotoStyles.find(s=>s.id===driverStyle.value)||driverPhotoStyles[0]).image+'.png')
 const copied=ref(false)
 let copiedTimer:ReturnType<typeof setTimeout>|undefined
 onBeforeUnmount(()=>clearTimeout(copiedTimer))
@@ -52,12 +52,7 @@ watch(resultText,()=>{pending.value=undefined;uploads.value={};kept.value=[];sta
 defineExpose({open:()=>{opened.value=true}})
 async function prepareBrief(){
  if(imageMode.value==='driver' && (!nationality.value.trim() || Number(age.value)<18 || Number(age.value)>100))throw new Error('Enter a nationality and an age from 18 to 100.')
- if(embedReference.value && imageMode.value!=='keep' && !embeddedReference.value){
-  const source=reference.value
-  const encoded=await embedReferenceImage(source)
-  if(source!==reference.value)throw new Error('Reference changed. Copy the brief again.')
-  embeddedReference.value=encoded
- }
+
  return brief.value
 }
 async function toggleBrief(){
@@ -69,7 +64,7 @@ async function copyBrief(){
  copied.value=false;clearTimeout(copiedTimer);preparingBrief.value=true
  try{
   const text=await prepareBrief()
-  try{await navigator.clipboard.writeText(text);copied.value=true;copiedTimer=setTimeout(()=>copied.value=false,2500);status.value=embedReference.value&&imageMode.value!=='keep'?'Brief copied with the selected reference embedded as base64.':'Brief copied. Paste it into ChatGPT and attach the reference image if needed.'}
+  try{await navigator.clipboard.writeText(text);copied.value=true;copiedTimer=setTimeout(()=>copied.value=false,2500);status.value='Brief copied. Paste it into ChatGPT and attach the reference image if needed.'}
   catch{showBrief.value=true;await nextTick();briefField.value?.$el?.select();status.value='Copy the brief below, or download it as a text file.'}
  }catch(error){status.value=(error as Error).message}finally{preparingBrief.value=false}
 }
@@ -77,6 +72,7 @@ async function downloadBrief(){
  preparingBrief.value=true
  try{const text=await prepareBrief(),url=URL.createObjectURL(new Blob([text],{type:'text/plain'}));const link=document.createElement('a');link.href=url;link.download='wb-bento-chatgpt-brief.txt';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(error){status.value=(error as Error).message}finally{preparingBrief.value=false}
 }
+
 async function copyReference(){try{await copyReferenceImage(reference.value);status.value='Reference image copied. Paste it into the same ChatGPT conversation.'}catch{status.value='Could not copy the reference. Download it using the link below.'}}
 async function review(){
  try{
@@ -123,14 +119,14 @@ function apply(){try{const project=applyChatGptImages(pending.value,uploads.valu
    </section>
    <section v-show="step===2" id="generation-step-2" class="exchange-step" aria-label="Copy to ChatGPT">
    <p class="muted">Copy the brief into ChatGPT, choose a variant, then bring back its JSON.</p>
-   <label>New photo<StudioSelect v-model="imageMode" label="New photo" :options="[{value:'keep',label:'Keep existing images'},{value:'driver',label:'Generate a driver photo'},{value:'car',label:'Generate a moving car photo'}]"/></label>
+   <label>New photo<StudioSelect v-model="imageMode" label="New photo" :options="[{value:'keep',label:'Keep existing images'},{value:'driver',label:'Generate a driver photo'},{value:'car',label:'Create a moving car photo from reference'}]"/></label>
+   <p v-if="imageMode==='car'" class="muted">Edits the selected car reference into a new street scene, preserving the vehicle and WB livery.</p>
    <p class="exchange-result-hint muted">{{imageMode==='keep'?'You’ll get updated banner JSON. Your images stay the same.':'You’ll get banner JSON first. ChatGPT will ask before generating the photo.'}}</p>
    <div v-if="imageMode==='driver'" class="two-fields"><label>Age<UiInput v-model="age" type="number" min="18" max="100" placeholder="35"/></label><label>Nationality<UiInput v-model="nationality" placeholder="Armenian"/></label></div>
    <div v-if="imageMode==='driver'" class="prompt-options" role="group" aria-label="Driver references"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="driverStyle===style.id" @click="driverStyle=style.id"><img :src="'/assets/figma/'+style.image+'.png'" alt=""/><span>{{style.name}}</span></UiButton></div>
+   <div v-if="imageMode==='car'" class="prompt-options exchange-car-references" role="group" aria-label="Car references"><UiButton v-for="angle in angles" :key="angle.id" variant="ghost" :aria-pressed="carAngle===angle.id" @click="carAngle=angle.id"><img :src="angle.src" alt=""/><span>{{angle.name}}</span></UiButton></div>
    <p v-if="imageMode!=='keep'" class="muted">The brief includes all four driver references and all car angles, with warm directional sunlight and clean urban backgrounds without trees. {{publicReferenceUrl(siteOrigin,reference)?'The brief includes public reference links. For reliable visual matching, copy the selected reference image and attach it alongside the brief.':'Attach the reference image in ChatGPT; localhost URLs cannot be accessed from your chat.'}}</p>
-   <label v-if="imageMode!=='keep'" class="safe-guide-toggle"><span>Embed reference as base64</span><UiSwitch v-model="embedReference" aria-label="Embed reference as base64"/></label>
-   <p v-if="imageMode!=='keep' && embedReference" class="muted">Includes a compact copy of the selected image inside the JSON, avoiding URL lookup. ChatGPT needs tools to decode it; an attachment may still be needed. Download the brief if it’s too large to paste.</p>
-   <div class="reference-copy-actions"><UiButton :disabled="preparingBrief" @click="copyBrief"><Check v-if="copied" class="size-4"/><Copy v-else class="size-4"/>{{preparingBrief?'Preparing…':copied?'Copied':'Copy for ChatGPT'}}</UiButton><UiButton v-if="embedReference && imageMode!=='keep'" variant="outline" :disabled="preparingBrief" @click="downloadBrief">Download brief</UiButton><UiButton v-if="imageMode!=='keep'" variant="outline" @click="copyReference">Copy reference image</UiButton><UiButton variant="ghost" size="sm"  :disabled="preparingBrief" @click="toggleBrief">{{showBrief?'Hide brief':'View brief'}}</UiButton></div>
+   <div class="reference-copy-actions"><UiButton :disabled="preparingBrief" @click="copyBrief"><Check v-if="copied" class="size-4"/><Copy v-else class="size-4"/>{{preparingBrief?'Preparing…':copied?'Copied':'Copy for ChatGPT'}}</UiButton><UiButton variant="outline" :disabled="preparingBrief" @click="downloadBrief">Download brief</UiButton><UiButton v-if="imageMode!=='keep'" variant="outline" @click="copyReference">Copy reference image</UiButton><UiButton variant="ghost" size="sm"  :disabled="preparingBrief" @click="toggleBrief">{{showBrief?'Hide brief':'View brief'}}</UiButton></div>
    <a v-if="imageMode!=='keep'" class="car-reference-download" :href="reference" download>Download reference image</a>
    <label v-if="showBrief">Generation brief<UiTextarea class="prompt-preview" ref="briefField" :model-value="brief" readonly rows="8"/></label>
    <div class="exchange-step-actions"><UiButton variant="ghost" @click="goStep(1)">Back</UiButton><UiButton variant="outline" @click="goStep(3)">I have the result</UiButton></div>

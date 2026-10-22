@@ -195,3 +195,6 @@ button:not(:disabled),summary{cursor:pointer}
 .studio-shell .prompt-preview[data-slot=textarea]{field-sizing:fixed;height:160px;min-height:160px;max-height:160px;overflow-y:auto;resize:none}
 
 .reset-photo-crop{margin-bottom:18px}
+
+
+.exchange-car-references img{object-fit:contain;background:var(--muted)}
