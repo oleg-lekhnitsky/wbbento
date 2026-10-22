@@ -35,7 +35,7 @@ try{
  assert.equal(await page.evaluate(()=>window.wbBento.get_bento().data.heading),'աշխատեք wb taxi-ի հետ')
  await heading.evaluate(el=>el.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:'նոր աշխատանք'})))
  await page.locator('.below-canvas').click();assert.equal(await page.evaluate(()=>window.wbBento.get_bento().data.heading),'նոր աշխատանք')
- await page.getByRole('button',{name:'Save project',exact:true}).click();await page.reload({waitUntil:'networkidle'});await page.waitForFunction(()=>window.wbBento)
+ await page.getByRole('button',{name:'Сохранить проект',exact:true}).click();await page.reload({waitUntil:'networkidle'});await page.waitForFunction(()=>window.wbBento)
  assert.equal(await page.locator('.artboard .headline h2').innerText(),'նոր աշխատանք')
  assert.equal(await page.locator('.artboard .headline p').innerText(),'новый подзаголовок')
  await page.evaluate(()=>window.wbBento.update_bento({data:{heading:'работайте в Гюмри и Санкт-Петербурге',description:'աշխատանք Գյումրիում',benefit:'drive in New York',city:'Երևան'}}))

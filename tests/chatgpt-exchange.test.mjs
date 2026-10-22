@@ -162,3 +162,13 @@ test('brief uses reference links without base64 reference instructions',()=>{
  assert.ok(!brief.includes('reference_data_url'))
  assert.ok(brief.includes('reference_url'))
 })
+
+test('car scene selections reach the image prompt and copied project independently of angle',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'car',carAngle:'rear-left',carStreet:'business',carLocation:'Самарканд'})
+ assert.ok(brief.includes('an airy business district'))
+ assert.ok(brief.includes('Самарканд'))
+ assert.ok(brief.includes('rear-left'))
+ const cleared=createChatGptBrief(createProject({data:{carPrompt:{location:'Old city'}}}),{imageMode:'car',carStreet:'residential',carLocation:''})
+ assert.ok(cleared.includes('a clean, quiet residential avenue'))
+ assert.ok(!cleared.includes('Old city'))
+})

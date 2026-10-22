@@ -58,32 +58,10 @@
       "figma_image_hash": "777174d00ef44bb699142bd65a2aed9cdd44b199"
     },
     {
-      "name": "taxi-side-right",
-      "file": "taxi-side-right.png",
-      "width": 2560,
-      "height": 1440,
-      "figma_image_hash": "a5adab16ed5ee69634f278751b85bb25ce610b9b"
-    },
-    {
-      "name": "taxi-side-left",
-      "file": "taxi-side-left.png",
-      "width": 2560,
-      "height": 1440,
-      "figma_image_hash": "ea7645eb8bba44d01c9e754b56115260bbbe9b58"
-    },
-    {
-      "name": "taxi-shadow",
-      "file": "taxi-shadow.png",
-      "width": 2560,
-      "height": 1440,
-      "figma_image_hash": "b8c296ef0058616c60453a5c532c3dd3b6ce1413"
-    },
-    {
-      "name": "taxi-roof-sign",
-      "file": "taxi-roof-sign.png",
-      "width": 2560,
-      "height": 1440,
-      "figma_image_hash": "483912e484150a18ae66b2a96ae740ede4a03609"
+      "name": "taxi-full",
+      "file": "taxi-full.svg",
+      "width": 2407,
+      "height": 767
     }
   ]
 }

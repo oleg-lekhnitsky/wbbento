@@ -9,7 +9,8 @@ export default defineNuxtConfig({
  vite:{plugins:[tailwindcss()]},
  css:['~/assets/css/ui.css','~/assets/css/main.css','~/assets/css/studio.css'],
  app:{head:{
-  title:'WB Bento — Partner creative studio',
-  meta:[{name:'description',content:'Create on-brand partner creatives with editable bento layouts.'}],
+  htmlAttrs:{lang:'ru'},
+  title:'WB Bento — Студия баннеров',
+  meta:[{name:'description',content:'Создавайте фирменные баннеры с редактируемыми шаблонами.'}],
  }},
 })

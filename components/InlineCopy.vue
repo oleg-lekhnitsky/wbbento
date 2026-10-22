@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {renderBrandCopy} from '~/lib/brand-copy.mjs'
+import {renderBrandCopy,keepLastWordsTogether} from '~/lib/brand-copy.mjs'
 const props=withDefaults(defineProps<{text?:string;tag?:string;editable?:boolean;label:string}>(),{text:'',tag:'span',editable:true})
 const emit=defineEmits<{update:[value:string];select:[];finish:[]}>()
 const element=ref<HTMLElement>()
 const focused=ref(false)
 let original='',composing=false,cancelled=false
-function sync(){if(element.value && !focused.value)renderBrandCopy(element.value,props.text)}
+function sync(){if(element.value && !focused.value)renderBrandCopy(element.value,props.tag==='p'?keepLastWordsTogether(props.text):props.text)}
 watch(()=>props.text,sync,{flush:'post'})
 onMounted(sync)
 function value(){return element.value?.innerText.replace(/\r/g,'').replace(/\n$/,'') ?? ''}

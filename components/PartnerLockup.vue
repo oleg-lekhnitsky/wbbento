@@ -3,7 +3,7 @@ const props=defineProps<{src:string; photo?:boolean;caption?:string}>()
 const logoWidth=computed(()=>props.photo?'56.91%':'53.65%')
 const gap=computed(()=>props.photo?'5.778%':'7.996%')
 const captionSize=computed(()=>props.photo?'5.615cqw':'5.293cqw')
-const captionFont="'WB Armenian',WB,Arial,sans-serif"
+const captionFont="'WB Armenian','WB Sans',Arial,sans-serif"
 const root=ref<HTMLElement>(),captionNode=ref<HTMLElement>()
 let observer:ResizeObserver|undefined,frame=0,disposed=false
 function fitCaption(){

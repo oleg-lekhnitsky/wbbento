@@ -27,8 +27,8 @@ button:not(:disabled),summary{cursor:pointer}
 .inspector-content{padding:0 20px 28px}
 .section-caption{display:flex;align-items:center;justify-content:space-between;color:var(--muted-foreground);font-size:11px;font-weight:500;line-height:1.4;margin:2px 0 14px}
 .section-caption>span{font-variant-numeric:tabular-nums;color:var(--muted-foreground);font-size:10px}
-.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 12px}
-.preset-card{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%;height:auto;padding:0!important;border:0;border-radius:0;background:transparent!important;white-space:normal;min-width:0;box-shadow:none}
+.preset-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:20px 12px}
+.preset-card{position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:8px;width:100%;height:auto;padding:0!important;border:0;border-radius:0;background:transparent!important;white-space:normal;min-width:0;box-shadow:none}
 .preset-preview{padding:4px;border:1px solid var(--border);border-radius:10px;background:var(--muted);transition:border-color .15s,box-shadow .15s;width:100%}
 .preset-card:hover .preset-preview{border-color:var(--muted-foreground)}
 .preset-card.active .preset-preview{border-color:var(--foreground);box-shadow:0 0 0 1px var(--foreground)}
@@ -198,3 +198,53 @@ button:not(:disabled),summary{cursor:pointer}
 
 
 .exchange-car-references img{object-fit:contain;background:var(--muted)}
+
+.city-field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.city-chips{padding:10px 12px;border-radius:20px;background:var(--input);min-width:0}
+.city-chips:focus-within{outline:2px solid var(--ring);outline-offset:2px}
+.city-chips-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0 0 6px;padding:0}
+.city-input-chip{display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:5px 8px 5px 12px;border-radius:999px;background:var(--background);font-size:13px}
+.city-input-chip>span{overflow-wrap:anywhere;min-width:0}
+.city-input-chip>button{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:var(--muted-foreground);cursor:pointer}
+.city-input-chip>button:hover{background:var(--muted);color:var(--foreground)}
+.city-chips-input{display:block;width:100%;min-width:0;padding:6px 0;border:0;background:transparent;color:var(--foreground);font:inherit;font-size:13px;outline:none}
+.city-chips-input::placeholder{color:var(--muted-foreground)}
+
+.template-group+.template-group{margin-top:28px}
+.template-group-title{font-size:12px;font-weight:500;color:var(--muted-foreground);margin:0 2px 12px;line-height:1.4}
+
+.assets-panel{flex-shrink:0;max-height:48%;overflow-y:auto}
+.assets-panel h3{font-size:13px;font-weight:500;margin:16px 0 10px}
+.assets-panel h3:first-child{margin-top:0}
+.asset-lockup-preview{container-type:inline-size;margin-bottom:14px}
+/* Square bento strip: 490 wide, 36 horizontal / 20 vertical padding, 44 radius. */
+.asset-lockup{width:100%;padding:calc(100cqw * 20 / 490) calc(100cqw * 36 / 490);border-radius:calc(100cqw * 44 / 490);color:white}
+.asset-file-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;color:var(--foreground);font-size:12px;text-decoration:none;border-bottom:1px solid var(--border)}
+.asset-file-link:hover{color:var(--muted-foreground)}
+.asset-file-link>span{overflow-wrap:anywhere;min-width:0}
+.asset-file-link>svg{flex-shrink:0}
+.inspector-panel>.assets-panel{width:100%;flex:0 1 auto;min-height:50px;display:flex;flex-direction:column;margin:0;box-shadow:0 1px 2px #00000004}
+.inspector-panel>.assets-panel>.prompt-trigger{flex-shrink:0;padding:14px 16px!important;font-size:12px!important}
+.assets-panel>.prompt-content{overflow-y:auto;min-height:0}
+.assets-panel label{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;font-size:12px;font-weight:500}
+
+.inspector-panel>.format-panel{width:100%;flex:0 1 auto;max-height:48%;min-height:50px;display:flex;flex-direction:column;margin:0}
+.inspector-panel>.format-panel>.prompt-trigger{flex-shrink:0;padding:14px 16px!important;font-size:12px!important}
+.format-panel>.prompt-content{overflow-y:auto;min-height:0}
+.format-panel label{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;font-size:12px}
+.inspector-panel>:is(.assets-panel,.format-panel)>.prompt-trigger{background:var(--background)}
+.inspector-panel>.format-panel{flex-shrink:0;max-height:none}
+.format-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px 8px;font-size:12px;font-weight:500}
+.format-panel-heading>span{display:flex;align-items:center;gap:8px}
+.format-panel-heading svg,.format-panel-heading small{color:var(--muted-foreground)}
+.format-panel-heading small{font-size:10px;font-weight:400}
+.format-panel-content{padding:0 16px 12px}
+.format-panel .format-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.format-panel .format-grid>[data-slot=button]{height:42px;min-height:0;flex-direction:row;justify-content:center;gap:5px;padding:6px;font-size:11px;border-radius:12px}
+.format-panel .format-grid .ratio-icon{width:12px;height:auto;max-height:20px;margin:0;flex-shrink:0}
+.format-panel .section-caption{margin-top:14px}
+
+.asset-download-action{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border);border-radius:16px;font-size:12px;color:var(--foreground);text-decoration:none;height:auto;white-space:normal}
+.asset-download-action>span{flex:1;text-align:left}
+.asset-download-action>small{font-size:10px;color:var(--muted-foreground)}
+.asset-label-options{padding:8px 0 12px}

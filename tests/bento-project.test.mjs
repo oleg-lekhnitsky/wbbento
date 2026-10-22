@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createProject,updateProject,validateProject,listLayouts} from '../lib/bento-project.mjs'
 test('all exact layouts and formats create independent editable projects',()=>{
- const layouts=listLayouts();assert.equal(layouts.length,8)
+ const layouts=listLayouts();assert.equal(layouts.length,13)
  for(const layout of layouts)for(const format of layout.formats){const p=createProject({layout:layout.id,format:format.id});assert.equal(p.preset,layout.index);assert.equal(p.format,format.index);assert.deepEqual(validateProject(p),p)}
  const a=createProject(),b=createProject();a.data.blockStyles.headline='pink';assert.equal(b.data.blockStyles.headline,'purple')
 })
@@ -12,7 +12,7 @@ test('content, labels and format-scoped image placement survive updates',()=>{
  assert.equal(b.format,3);assert.equal(b.data.benefitLabels,'one\ntwo\nthree');assert.equal(b.data.heading,'новый заголовок');assert.equal(b.data.elementTransforms['7:1080x1080'].vehicle.rotation,15);assert.equal(a.data.blockStyles.benefit,'purple')
 })
 test('rejects unsupported geometry, locked text transforms and unsafe assets',()=>{
- for(const request of [{layout:8},{format:'banner'},{fontSize:80},{data:{heading:7}},{data:{padding:0}},{data:{accent:'#123456'}},{data:{position:101}},{data:{photoZoom:'150'}},{data:{wbLogo:'/assets/custom.svg'}},{data:{image:'https://example.com/photo.png'}},{data:{image:'/assets/../private.png'}},{data:{elementTransforms:{'3:1080x1080':{website:{x:10}}}}}])assert.throws(()=>createProject(request))
+ for(const request of [{layout:13},{format:'banner'},{fontSize:80},{data:{heading:7}},{data:{padding:0}},{data:{accent:'#123456'}},{data:{position:101}},{data:{photoZoom:'150'}},{data:{wbLogo:'/assets/custom.svg'}},{data:{image:'https://example.com/photo.png'}},{data:{image:'/assets/../private.png'}},{data:{elementTransforms:{'3:1080x1080':{website:{x:10}}}}}])assert.throws(()=>createProject(request))
  assert.throws(()=>validateProject({...createProject(),version:2}))
 })
 test('local asset and clipboard image inputs are accepted; unknown patches are rejected',()=>{
@@ -31,4 +31,27 @@ test('replacing an image resets its crop and transforms in every format, retaini
  const next=updateProject(p,{data:{image:'/assets/figma/driver-blue.png'}})
  assert.equal(next.data.photoZoom,100);assert.equal(next.data.position,50);assert.equal(next.data.elementTransforms['3:1080x1080'].photo,undefined);assert.equal(next.data.elementTransforms['3:1200x628'].photo,undefined);assert.equal(next.data.elementTransforms['3:1080x1080'].artwork.rotation,20)
  assert.equal(p.data.photoZoom,220)
+})
+
+test('photo layouts preserve editable copy, official branding and photo transforms in every format',()=>{
+ for(const layout of ['photo-bottom','photo-top','photo-left','photo-box','photo-box-wide'])for(const format of ['square','portrait','story','landscape']){
+  const project=createProject({layout,format,data:{heading:'новый заголовок',description:'дополнительный текст'}})
+  const scope=`${project.preset}:${listLayouts().find(layout=>layout.index===project.preset).formats[project.format].w}x${listLayouts().find(layout=>layout.index===project.preset).formats[project.format].h}`
+  const edited=updateProject(project,{data:{elementTransforms:{[scope]:{photo:{scale:1.2,x:10}}}}})
+  assert.deepEqual(validateProject(edited),edited)
+  assert.equal(edited.data.wbLogo,'/wb-taxi.svg')
+  assert.equal(edited.data.benefit,'')
+  assert.equal(edited.data.heading,'новый заголовок')
+ }
+})
+
+test('legacy vehicle assets migrate to the complete taxi without changing placement or custom uploads',()=>{
+ for(const name of ['taxi-side-left.png','taxi-side-right.png','taxi-composed.svg']){
+  const p=createProject({data:{vehicleImage:'/assets/figma/'+name,vehicleScale:180,vehiclePosition:165}})
+  assert.equal(p.data.vehicleImage,'/assets/figma/taxi-full.svg')
+  assert.equal(p.data.vehicleScale,180);assert.equal(p.data.vehiclePosition,165)
+  assert.equal(validateProject({...p,data:{...p.data,vehicleImage:'/assets/figma/'+name}}).data.vehicleImage,'/assets/figma/taxi-full.svg')
+ }
+ assert.equal(createProject({data:{vehicleImage:'data:image/png;base64,YQ=='}}).data.vehicleImage,'data:image/png;base64,YQ==')
+ for(const layout of listLayouts().filter(l=>l.index<8))assert.equal(layout.defaults.vehicleImage,'/assets/figma/taxi-full.svg')
 })

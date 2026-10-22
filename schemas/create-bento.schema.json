@@ -13,7 +13,12 @@
         "driver-recruitment",
         "photo-payments",
         "own-car",
-        "rental-offer"
+        "rental-offer",
+        "photo-bottom",
+        "photo-top",
+        "photo-left",
+        "photo-box",
+        "photo-box-wide"
       ]
     },
     "format": {
@@ -43,6 +48,13 @@
             "location": {
               "type": "string",
               "maxLength": 200
+            },
+            "time": {
+              "type": "string",
+              "enum": [
+                "day",
+                "sunset"
+              ]
             }
           }
         },
@@ -72,7 +84,7 @@
           "type": "object",
           "additionalProperties": false,
           "patternProperties": {
-            "^([0-7]):(1080x1080|1080x1350|1080x1920|1200x628)$": {
+            "^([0-9]|1[0-2]):(1080x1080|1080x1350|1080x1920|1200x628)$": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
@@ -254,12 +266,12 @@
         "storySafeTop": {
           "type": "number",
           "minimum": 40,
-          "maximum": 700
+          "maximum": 1000
         },
         "storySafeBottom": {
           "type": "number",
           "minimum": 40,
-          "maximum": 700
+          "maximum": 1000
         },
         "blockStyles": {
           "type": "object",
