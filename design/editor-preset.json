@@ -1,0 +1,18 @@
+{
+  "requestedCode": "b1VlIttI",
+  "decodedWith": "shadcn preset decode b1VlIttI",
+  "style": "luma",
+  "baseColor": "neutral",
+  "theme": "neutral",
+  "chartColor": "neutral",
+  "iconLibrary": "lucide",
+  "font": "inter",
+  "fontHeading": "inherit",
+  "radius": "default",
+  "menuAccent": "subtle",
+  "menuColor": "default",
+  "vueStyle": "reka-luma",
+  "vueMapping": "React preset codes are not accepted by the installed shadcn-vue CLI. Applied the decoded settings explicitly with the official Vue Luma registry.",
+  "scope": "editor shell only; bento artwork retains its own font and CSS",
+  "sources": ["https://ui.shadcn.com/create?preset=b1VlIttI", "https://shadcn-vue.com/docs/cli", "https://shadcn-vue.com/docs/installation/nuxt"]
+}

@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WB Bento editable project v1",
+  "type": "object",
+  "required": [
+    "version",
+    "preset",
+    "format",
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "preset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7
+    },
+    "format": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "carPrompt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "angle": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "street": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "location": {
+              "type": "string",
+              "maxLength": 200
+            }
+          }
+        },
+        "imagePrompt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "age": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "nationality": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "style": {
+              "type": "string",
+              "maxLength": 200
+            }
+          }
+        },
+        "benefitLabels": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "elementTransforms": {
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^([0-7]):(1080x1080|1080x1350|1080x1920|1200x628)$": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "photo": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "y": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "scale": {
+                      "type": "number",
+                      "minimum": 0.1,
+                      "maximum": 6
+                    },
+                    "rotation": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    }
+                  }
+                },
+                "artwork": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "y": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "scale": {
+                      "type": "number",
+                      "minimum": 0.1,
+                      "maximum": 6
+                    },
+                    "rotation": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    }
+                  }
+                },
+                "vehicle": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "y": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "scale": {
+                      "type": "number",
+                      "minimum": 0.1,
+                      "maximum": 6
+                    },
+                    "rotation": {
+                      "type": "number",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "partner": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "benefit": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "website": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "accent": {
+          "enum": [
+            "#661AFF",
+            "#FF00FF",
+            "#202020"
+          ]
+        },
+        "image": {
+          "type": "string",
+          "maxLength": 23068672
+        },
+        "logo": {
+          "type": "string",
+          "maxLength": 23068672
+        },
+        "wbLogo": {
+          "const": "/wb-taxi.svg"
+        },
+        "photoZoom": {
+          "type": "number",
+          "minimum": 100,
+          "maximum": 300
+        },
+        "position": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "positionY": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "photoFit": {
+          "enum": [
+            "cover",
+            "contain"
+          ]
+        },
+        "vehicleScale": {
+          "type": "number",
+          "minimum": 50,
+          "maximum": 260
+        },
+        "vehiclePosition": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 230
+        },
+        "benefitLabel1": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "benefitLabel2": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "artwork": {
+          "type": "string",
+          "maxLength": 23068672
+        },
+        "vehicleImage": {
+          "type": "string",
+          "maxLength": 23068672
+        },
+        "storySafeTop": {
+          "type": "number",
+          "minimum": 40,
+          "maximum": 700
+        },
+        "storySafeBottom": {
+          "type": "number",
+          "minimum": 40,
+          "maximum": 700
+        },
+        "blockStyles": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "headline": {
+              "enum": [
+                "default",
+                "purple",
+                "pink"
+              ]
+            },
+            "benefit": {
+              "enum": [
+                "default",
+                "purple",
+                "pink"
+              ]
+            },
+            "image": {
+              "enum": [
+                "default",
+                "purple",
+                "pink"
+              ]
+            },
+            "vehicle": {
+              "enum": [
+                "default",
+                "purple",
+                "pink"
+              ]
+            },
+            "partner": {
+              "enum": [
+                "default",
+                "purple",
+                "pink"
+              ]
+            }
+          }
+        },
+        "partnerCaption": {
+          "type": "string",
+          "maxLength": 5000,
+          "description": "Localized official partner caption, preferably two lines separated by a newline. Preserve the official logo image."
+        }
+      }
+    }
+  }
+}

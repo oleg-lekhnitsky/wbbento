@@ -3,3 +3,15 @@ node_modules
 .output
 dist
 .DS_Store
+
+outputs/
+
+.vercel/
+.env
+.env.*
+!.env.example
+
+# Generated API test previews and design audits
+examples/rental-*.png
+design/figma-image-audit.json
+.openai/

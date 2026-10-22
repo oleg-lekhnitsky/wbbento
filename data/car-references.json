@@ -1,0 +1,48 @@
+[
+  {
+    "id": "front-left",
+    "name": "Front left",
+    "src": "/assets/figma/cars/front-left-no-plate.png",
+    "figmaNode": "33:444",
+    "imageHash": "5b6149d049c2a330ef0295fa323b8040041aa744",
+    "originalSrc": "/assets/figma/cars/front-left.png",
+    "edit": "Blank front plate removed with imagegen"
+  },
+  {
+    "id": "front-right",
+    "name": "Front right",
+    "src": "/assets/figma/cars/front-right-no-plate.png",
+    "figmaNode": "33:451",
+    "imageHash": "9fc81153aafe002f08cad9ebdb63df1f62a1200f",
+    "originalSrc": "/assets/figma/cars/front-right.png",
+    "edit": "Blank front plate removed with imagegen"
+  },
+  {
+    "id": "rear-left",
+    "name": "Rear left",
+    "src": "/assets/figma/cars/rear-left.png",
+    "figmaNode": "33:458",
+    "imageHash": "dc68c301b40cbc3686c780522e31ebfdd6b91ac0"
+  },
+  {
+    "id": "rear-right",
+    "name": "Rear right",
+    "src": "/assets/figma/cars/rear-right.png",
+    "figmaNode": "33:465",
+    "imageHash": "91bccf6e0dc04e2d53eb27f0dff45233bed32f0e"
+  },
+  {
+    "id": "side-left",
+    "name": "Left side",
+    "src": "/assets/figma/cars/side-left.png",
+    "figmaNode": "33:473",
+    "imageHash": "18fbfe2ec50d6ca4e3780a21640ac8f74d564a40"
+  },
+  {
+    "id": "side-right",
+    "name": "Right side",
+    "src": "/assets/figma/cars/side-right.png",
+    "figmaNode": "33:480",
+    "imageHash": "ea7645eb8bba44d01c9e754b56115260bbbe9b58"
+  }
+]

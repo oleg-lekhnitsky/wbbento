@@ -1,0 +1,13 @@
+{
+  "layout": "rental-offer",
+  "format": "square",
+  "data": {
+    "partner": "DRIVER PRO",
+    "heading": "ваш следующий шаг — wb taxi",
+    "description": "подключаем водителей ежедневно",
+    "benefit": "автомобиль для вашего дохода",
+    "city": "Ташкент\nСамарканд",
+    "benefitLabels": "физ лица\nип",
+    "blockStyles": { "headline": "default", "benefit": "purple" }
+  }
+}

@@ -1,0 +1,458 @@
+{
+  "0": {
+    "photo": {
+      "node": "1:31",
+      "frame": {
+        "x": 437.9001770019531,
+        "y": 815
+      },
+      "imageSize": {
+        "x": 661.0762939453125,
+        "y": 1174.622314453125
+      },
+      "transform": {
+        "m00": 1,
+        "m01": 0,
+        "m02": -72.755859375,
+        "m10": 0,
+        "m11": 1,
+        "m12": -203.48828125
+      },
+      "source": "/assets/figma/driver-purple.png",
+      "defaultControls": {
+        "photoZoom": 144.12543,
+        "position": 32.6002,
+        "positionY": 56.58389
+      }
+    }
+  },
+  "1": {
+    "artwork": {
+      "node": "1:80",
+      "frame": {
+        "x": 436.048828125,
+        "y": 291
+      },
+      "frameClips": false,
+      "source": "/assets/figma/keys.png",
+      "rendered": "/assets/figma/artwork-preset-1.svg",
+      "style": {
+        "left": "67.36167697697726%",
+        "top": "41.88261538639546%",
+        "width": "25.432469879062847%",
+        "height": "51.15171879158134%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none",
+        "--artwork-transform-origin": "-59.009009009009006% 17.785234899328866%"
+      },
+      "chain": [
+        {
+          "id": "1:80",
+          "size": {
+            "x": 199.83580017089844,
+            "y": 199.83580017089844
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": -39.256500244140625,
+            "m10": 0,
+            "m11": 1,
+            "m12": -35.05998611450195
+          },
+          "clips": false
+        },
+        {
+          "id": "1:79",
+          "size": {
+            "x": 119.939453125,
+            "y": 142.66482543945312
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": 296,
+            "m10": 0,
+            "m11": 1,
+            "m12": 131.927734375
+          },
+          "clips": false
+        }
+      ]
+    }
+  },
+  "2": {
+    "photo": {
+      "node": "1:64",
+      "frame": {
+        "x": 437.9001770019531,
+        "y": 815
+      },
+      "imageSize": {
+        "x": 589.701171875,
+        "y": 998.3238525390625
+      },
+      "transform": {
+        "m00": 1,
+        "m01": 0,
+        "m02": -49.8169059753418,
+        "m10": 0,
+        "m11": 1,
+        "m12": -147.06004333496094
+      },
+      "source": "/assets/figma/driver-blue.png",
+      "defaultControls": {
+        "photoZoom": 122.43367,
+        "position": 32.81725,
+        "positionY": 80.43347
+      }
+    },
+    "artwork": {
+      "node": "1:50",
+      "frame": {
+        "x": 436.26171875,
+        "y": 291
+      },
+      "frameClips": true,
+      "source": "/assets/figma/taxi-light.png",
+      "rendered": "/assets/figma/artwork-preset-2.svg",
+      "style": {
+        "left": "0.0%",
+        "top": "0.0%",
+        "width": "100.0%",
+        "height": "100.0%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:50",
+          "size": {
+            "x": 466.998046875,
+            "y": 152.78944396972656
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": -7,
+            "m10": 0,
+            "m11": 1,
+            "m12": 158.26544189453125
+          },
+          "clips": false
+        }
+      ]
+    }
+  },
+  "3": {
+    "photo": {
+      "node": "1:241",
+      "frame": {
+        "x": 440,
+        "y": 418
+      },
+      "imageSize": {
+        "x": 872.42919921875,
+        "y": 698.435791015625
+      },
+      "transform": {
+        "m00": 1,
+        "m01": 0,
+        "m02": -351.65234375,
+        "m10": 0,
+        "m11": 1,
+        "m12": -198.71875
+      },
+      "source": "/assets/figma/driver-phone.png",
+      "defaultControls": {
+        "photoZoom": 167.13515,
+        "position": 81.32021,
+        "positionY": 70.81293
+      }
+    },
+    "artwork": {
+      "node": "1:248",
+      "frame": {
+        "x": 436.048828125,
+        "y": 291
+      },
+      "frameClips": true,
+      "source": "/assets/figma/taxi-light.png",
+      "rendered": "/assets/figma/artwork-preset-3.svg",
+      "style": {
+        "left": "0.0%",
+        "top": "0.0%",
+        "width": "100.0%",
+        "height": "100.0%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:248",
+          "size": {
+            "x": 466.998046875,
+            "y": 152.78944396972656
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": -7,
+            "m10": 0,
+            "m11": 1,
+            "m12": 159.265625
+          },
+          "clips": false
+        }
+      ]
+    }
+  },
+  "4": {
+    "photo": {
+      "node": "1:167",
+      "frame": {
+        "x": 440,
+        "y": 418
+      },
+      "imageSize": {
+        "x": 556.3984375,
+        "y": 988.627197265625
+      },
+      "transform": {
+        "m00": 1,
+        "m01": 0,
+        "m02": -69.19921875,
+        "m10": 0,
+        "m11": 1,
+        "m12": -224.654296875
+      },
+      "source": "/assets/figma/driver-purple-phone.png",
+      "defaultControls": {
+        "photoZoom": 126.45419,
+        "position": 59.4503,
+        "positionY": 39.36971
+      }
+    },
+    "artwork": {
+      "node": "1:179",
+      "frame": {
+        "x": 436.048828125,
+        "y": 291
+      },
+      "frameClips": false,
+      "source": "/assets/figma/wallet.png",
+      "rendered": "/assets/figma/artwork-preset-4.svg",
+      "style": {
+        "left": "0.0%",
+        "top": "0.0%",
+        "width": "123.04113084927238%",
+        "height": "100.0%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:179",
+          "size": {
+            "x": 347.3819274902344,
+            "y": 347.3819274902344
+          },
+          "transform": {
+            "m00": 0.9725068211555481,
+            "m01": 0.23287442326545715,
+            "m02": -12.629863739013672,
+            "m10": -0.23287442326545715,
+            "m11": 0.9725068211555481,
+            "m12": 80.89710998535156
+          },
+          "clips": false
+        },
+        {
+          "id": "1:178",
+          "size": {
+            "x": 406.0975341796875,
+            "y": 289.98876953125
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": 130.421875,
+            "m10": 0,
+            "m11": 1,
+            "m12": -1.65625
+          },
+          "clips": true
+        }
+      ]
+    }
+  },
+  "5": {
+    "photo": {
+      "node": "1:265",
+      "frame": {
+        "x": 893,
+        "y": 540
+      },
+      "imageSize": {
+        "x": 1412.6275634765625,
+        "y": 1629.1610107421875
+      },
+      "transform": {
+        "m00": 1,
+        "m01": 0,
+        "m02": -246.62109375,
+        "m10": 0,
+        "m11": 1,
+        "m12": -428.826171875
+      },
+      "source": "/assets/figma/driving-taxi.png",
+      "defaultControls": {
+        "photoZoom": 158.18898,
+        "position": 47.46113,
+        "positionY": 39.37514
+      }
+    },
+    "artwork": {
+      "node": "1:275",
+      "frame": {
+        "x": 893,
+        "y": 256
+      },
+      "frameClips": false,
+      "source": "/assets/figma/wallet.png",
+      "rendered": "/assets/figma/artwork-preset-5.svg",
+      "style": {
+        "left": "55.76707726763718%",
+        "top": "-28.787240066097286%",
+        "width": "44.23292273236282%",
+        "height": "128.7872400660973%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:275",
+          "size": {
+            "x": 635.5056762695312,
+            "y": 635.5056762695312
+          },
+          "transform": {
+            "m00": 0.9725068211555481,
+            "m01": 0.23287442326545715,
+            "m02": -23.10546875,
+            "m10": -0.23287442326545715,
+            "m11": 0.9725068211555481,
+            "m12": 147.9921875
+          },
+          "clips": false
+        },
+        {
+          "id": "1:274",
+          "size": {
+            "x": 742.9208984375,
+            "y": 530.509765625
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": 318,
+            "m10": 0,
+            "m11": 1,
+            "m12": -274.509765625
+          },
+          "clips": true
+        }
+      ]
+    }
+  },
+  "6": {
+    "artwork": {
+      "node": "1:123",
+      "frame": {
+        "x": 436.048828125,
+        "y": 291
+      },
+      "frameClips": true,
+      "source": "/assets/figma/taxi-light.png",
+      "rendered": "/assets/figma/artwork-preset-6.svg",
+      "style": {
+        "left": "0.0%",
+        "top": "0.0%",
+        "width": "100.0%",
+        "height": "100.0%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:123",
+          "size": {
+            "x": 466.998046875,
+            "y": 152.78944396972656
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": -7,
+            "m10": 0,
+            "m11": 1,
+            "m12": 159.265625
+          },
+          "clips": false
+        }
+      ]
+    }
+  },
+  "7": {
+    "artwork": {
+      "node": "1:198",
+      "frame": {
+        "x": 436.048828125,
+        "y": 291
+      },
+      "frameClips": true,
+      "source": "/assets/figma/taxi-light.png",
+      "rendered": "/assets/figma/artwork-preset-7.svg",
+      "style": {
+        "left": "0.0%",
+        "top": "0.0%",
+        "width": "100.0%",
+        "height": "100.0%",
+        "right": "auto",
+        "bottom": "auto",
+        "objectFit": "fill",
+        "maxWidth": "none"
+      },
+      "chain": [
+        {
+          "id": "1:198",
+          "size": {
+            "x": 466.998046875,
+            "y": 152.78944396972656
+          },
+          "transform": {
+            "m00": 1,
+            "m01": 0,
+            "m02": -7,
+            "m10": 0,
+            "m11": 1,
+            "m12": 158.26544189453125
+          },
+          "clips": false
+        }
+      ]
+    }
+  }
+}

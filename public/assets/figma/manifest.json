@@ -1,0 +1,89 @@
+{
+  "source": "wb bento.fig",
+  "assets": [
+    {
+      "name": "driver-purple",
+      "file": "driver-purple.png",
+      "width": 941,
+      "height": 1672,
+      "figma_image_hash": "87f4beebe989291526285715753da93f9faf778e"
+    },
+    {
+      "name": "driver-purple-phone",
+      "file": "driver-purple-phone.png",
+      "width": 941,
+      "height": 1672,
+      "figma_image_hash": "bed62b719b60006ff48d8f093c208bb74c8d59fe"
+    },
+    {
+      "name": "driver-blue",
+      "file": "driver-blue.png",
+      "width": 747,
+      "height": 1264,
+      "figma_image_hash": "b15f9298839c7caacc98280ab1d7df6cef169ffb"
+    },
+    {
+      "name": "driver-phone",
+      "file": "driver-phone.png",
+      "width": 1024,
+      "height": 820,
+      "figma_image_hash": "8c99a8f7c0e76cbf0a69257cda783dcdd6e6684f"
+    },
+    {
+      "name": "driving-taxi",
+      "file": "driving-taxi.png",
+      "width": 3224,
+      "height": 3718,
+      "figma_image_hash": "194e9506f64cb5c90ef2a27050931aaa29592454"
+    },
+    {
+      "name": "wallet",
+      "file": "wallet.png",
+      "width": 1280,
+      "height": 1280,
+      "figma_image_hash": "3e67d62990134948239bba83f58f1c683b1c33e1"
+    },
+    {
+      "name": "keys",
+      "file": "keys.png",
+      "width": 1280,
+      "height": 1280,
+      "figma_image_hash": "b89015c1989d0cd8f00d1062f1dbfbca5b3d54aa"
+    },
+    {
+      "name": "taxi-light",
+      "file": "taxi-light.png",
+      "width": 1280,
+      "height": 1280,
+      "figma_image_hash": "777174d00ef44bb699142bd65a2aed9cdd44b199"
+    },
+    {
+      "name": "taxi-side-right",
+      "file": "taxi-side-right.png",
+      "width": 2560,
+      "height": 1440,
+      "figma_image_hash": "a5adab16ed5ee69634f278751b85bb25ce610b9b"
+    },
+    {
+      "name": "taxi-side-left",
+      "file": "taxi-side-left.png",
+      "width": 2560,
+      "height": 1440,
+      "figma_image_hash": "ea7645eb8bba44d01c9e754b56115260bbbe9b58"
+    },
+    {
+      "name": "taxi-shadow",
+      "file": "taxi-shadow.png",
+      "width": 2560,
+      "height": 1440,
+      "figma_image_hash": "b8c296ef0058616c60453a5c532c3dd3b6ce1413"
+    },
+    {
+      "name": "taxi-roof-sign",
+      "file": "taxi-roof-sign.png",
+      "width": 2560,
+      "height": 1440,
+      "figma_image_hash": "483912e484150a18ae66b2a96ae740ede4a03609"
+    }
+  ]
+}

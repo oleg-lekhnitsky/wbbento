@@ -1,0 +1,8 @@
+# Development references and generated artifacts are not needed to build the site.
+design/
+tests/
+examples/
+outputs/
+.openai/
+.codex/
+*.md
