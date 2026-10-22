@@ -5,7 +5,7 @@ import {Input as UiInput} from '~/components/ui/input'
 import {Textarea as UiTextarea} from '~/components/ui/textarea'
 import {Collapsible,CollapsibleTrigger,CollapsibleContent} from '~/components/ui/collapsible'
 import {Sparkles,ChevronDown,Copy,Upload,Check} from '@lucide/vue'
-import {createChatGptBrief,parseChatGptResult,applyChatGptImages,publicReferenceUrl} from '~/lib/chatgpt-exchange.mjs'
+import {createChatGptBrief,parseChatGptResult,applyChatGptImages,publicReferenceUrl,REFERENCE_SITE_ORIGIN} from '~/lib/chatgpt-exchange.mjs'
 import angles from '~/data/car-references.json'
 import {formatIds,formats} from '~/lib/bento-project.mjs'
 import {driverPhotoStyles} from '~/lib/image-prompts.mjs'
@@ -36,9 +36,8 @@ watch(()=>props.project,(next,previous)=>{
 })
 function toggleChange(id:string){selectedChanges.value=selectedChanges.value.includes(id)?selectedChanges.value.filter(value=>value!==id):[...selectedChanges.value,id]}
 const changes=computed(()=>Object.fromEntries(selectedChanges.value.map(id=>[id,id==='copy'?{language:language.value}:id==='cities'?{cities:cities.value}:id==='offer'?{offer:offer.value}:id==='partner'?{partner:partner.value,website:website.value,phone:phone.value}:{format:targetFormat.value}])))
-const siteOrigin=ref('')
-onMounted(()=>{siteOrigin.value=window.location.origin})
-const brief=computed(()=>createChatGptBrief(props.project,{driverStyle:driverStyle.value,suggestLayout:suggestLayout.value,siteOrigin:siteOrigin.value,request:request.value,changes:changes.value,imageMode:imageMode.value,age:age.value,nationality:nationality.value}))
+const siteOrigin=REFERENCE_SITE_ORIGIN
+const brief=computed(()=>createChatGptBrief(props.project,{driverStyle:driverStyle.value,suggestLayout:suggestLayout.value,siteOrigin,request:request.value,changes:changes.value,imageMode:imageMode.value,age:age.value,nationality:nationality.value}))
 const reference=computed(()=>imageMode.value==='car'?(angles.find(a=>a.id===props.project.data.carPrompt.angle)||angles[0]).src:'/assets/figma/'+(driverPhotoStyles.find(s=>s.id===driverStyle.value)||driverPhotoStyles[0]).image+'.png')
 const copied=ref(false)
 let copiedTimer:ReturnType<typeof setTimeout>|undefined

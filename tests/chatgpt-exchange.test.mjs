@@ -115,3 +115,9 @@ test('each image request carries its selected reference URL as generation metada
  assert.equal(result.project.data.image,project.data.image)
  images[0].reference_url='javascript:alert(1)';assert.throws(()=>parseChatGptResult(JSON.stringify({project,images})),/HTTPS/)
 })
+
+test('reference URLs default to the production website independently of the editor host',()=>{
+ const brief=createChatGptBrief(createProject(),{imageMode:'driver',driverStyle:'portrait'})
+ assert.ok(brief.includes('"reference_url": "https://wbbento.vercel.app/assets/figma/driver-blue.png"'))
+ assert.ok(brief.includes('https://wbbento.vercel.app/assets/figma/cars/front-left-no-plate.png'))
+})

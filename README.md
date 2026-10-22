@@ -19,7 +19,7 @@ Open **Create with ChatGPT** above Properties, or use the **ChatGPT** header but
 2. **ChatGPT:** choose whether to keep photos or generate a driver/car photo. Enter driver age and nationality when needed. Copy the brief into ChatGPT. It presents three variants, offers more, waits for your choice, returns JSON, and then asks about photo generation.
 3. **Import:** paste the final JSON or upload its JSON file. Results without requested images apply immediately. Otherwise, upload each generated image or choose **Keep existing image**, then apply.
 
-On a public HTTPS deployment, the brief includes all driver/car reference URLs and a selected `reference_url` beside each photo prompt. If ChatGPT cannot open or use a URL as visual input, attach the reference with **Copy reference image**. Localhost requires attachments. The editor does not call an image-generation API; generated photos come from the user's ChatGPT conversation.
+The brief uses `https://wbbento.vercel.app` for all driver/car reference URLs and the selected `reference_url` beside each photo prompt, including when the editor runs locally. If ChatGPT cannot open or use a URL as visual input, attach the reference with **Copy reference image**. The editor does not call an image-generation API; generated photos come from the user's ChatGPT conversation.
 
 The original image assets stay separate from the JSON. Large local uploads are omitted from copied briefs and retained during compatible imports. Photos use source-specific crop settings on layout changes; **Reset photo crop** is available in the photo settings. The official partner caption can be localized with the selected language and edited in its block.
 
