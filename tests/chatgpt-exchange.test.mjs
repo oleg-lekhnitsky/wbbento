@@ -131,8 +131,20 @@ test('the selected phone reference is authoritative rather than a first-referenc
  assert.ok(request.prompt.includes('safely parked car'))
  assert.ok(request.prompt.includes('smartphone toward the camera'))
  assert.ok(brief.includes('Never use stock search photos, unrelated thumbnails'))
+ assert.ok(brief.includes('Do not use image search, search-result carousels, visual lookups'))
+ assert.ok(brief.includes('Display NO thumbnail, image card or preview illustration in this fallback'))
  assert.ok(brief.includes('Choosing a copy variant or another layout does NOT change the selected photo reference'))
  assert.ok(!brief.includes('starting preference'))
  const catalog=JSON.parse(brief.split('REFERENCE IMAGE URLS\n')[1].split('\n\nStart by')[0])
  assert.equal(catalog.driver_styles[0].style,'phone');assert.equal(catalog.driver_styles[0].selected,true)
+})
+
+test('embeds only the selected reference in image request metadata, leaving project assets unchanged',()=>{
+ const project=createProject(),brief=createChatGptBrief(project,{imageMode:'driver',driverStyle:'phone',referenceDataUrl:pixel})
+ const image=JSON.parse(brief.split('IMAGE REQUESTS\n')[1].split('\n\nSHARED PHOTO ART DIRECTION')[0])[0]
+ assert.equal(image.reference_data_url,pixel);assert.equal(image.reference_style,'phone')
+ assert.ok(brief.includes('Never echo the base64 back in the final JSON'))
+ assert.ok(brief.includes('decode it into an image file'))
+ assert.ok(!project.data.image.startsWith('data:'))
+ assert.throws(()=>createChatGptBrief(project,{imageMode:'car',referenceDataUrl:'https://example.com/image.png'}),/Invalid embedded/)
 })
