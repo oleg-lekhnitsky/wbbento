@@ -21,7 +21,7 @@
     "format": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 3
+      "maximum": 4
     },
     "data": {
       "type": "object",
@@ -78,7 +78,7 @@
           "type": "object",
           "additionalProperties": false,
           "patternProperties": {
-            "^([0-9]|1[0-2]):(1080x1080|1080x1350|1080x1920|1200x628)$": {
+            "^([0-9]|1[0-2]):(1080x1080|1080x1350|1080x1920|1200x628|1920x1080)$": {
               "type": "object",
               "additionalProperties": false,
               "properties": {

@@ -24,3 +24,12 @@ test('keeps the final two subheading words together without crossing explicit li
  assert.equal(keepLastWordsTogether('начните работать\nсегодня'),'начните работать\nсегодня')
  assert.equal(keepLastWordsTogether('сегодня'),'сегодня')
 })
+
+test('keeps по with the next word while respecting explicit line breaks',async()=>{
+ const {keepPrepositionsTogether}=await import('../lib/brand-copy.mjs')
+ assert.equal(keepPrepositionsTogether('работайте в такси по своему графику'),'работайте в такси по\u00a0своему графику')
+ assert.equal(keepPrepositionsTogether('По своему графику'),'По\u00a0своему графику')
+ assert.equal(keepPrepositionsTogether('по\nсвоему графику'),'по\nсвоему графику')
+ assert.equal(keepPrepositionsTogether('депо рядом'),'депо рядом')
+ assert.equal(brandCopyParts('по своему графику').map(p=>p.text).join(''),'по\u00a0своему графику')
+})

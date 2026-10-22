@@ -1581,3 +1581,30 @@
 .creative.reference-creative.simple-creative.layout-9.landscape .tile.headline .headline-copy {
  margin-top:1.5cqw;
 }
+
+/* Driver introduction has no benefit card in any format. */
+.reference-creative.landscape.layout-0 .bento-grid {
+ grid-template-columns:1fr 1fr;
+ grid-template-rows:minmax(0,1fr) auto;
+}
+.reference-creative.landscape.layout-0 .benefit {
+ display:none;
+}
+.reference-creative.landscape.layout-0 .photograph {
+ grid-column:2;
+ grid-row:1;
+}
+.reference-creative.landscape.layout-0 .wb-partner {
+ grid-column:2;
+ grid-row:2;
+ width:100%;
+ height:auto;
+ aspect-ratio:490 / 118;
+ padding:var(--strip-inset) var(--card-inset);
+}
+.reference-creative.landscape.layout-0 .creative-footer {
+ grid-template-columns:1fr 1fr;
+}
+.reference-creative.landscape.layout-0 .creative-footer > span:last-child {
+ grid-column:2;
+}

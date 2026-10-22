@@ -55,3 +55,13 @@ test('legacy vehicle assets migrate to the complete taxi without changing placem
  assert.equal(createProject({data:{vehicleImage:'data:image/png;base64,YQ=='}}).data.vehicleImage,'data:image/png;base64,YQ==')
  for(const layout of listLayouts().filter(l=>l.index<8))assert.equal(layout.defaults.vehicleImage,'/assets/figma/taxi-full.svg')
 })
+
+test('widescreen format persists independently with its own image transforms',()=>{
+ const p=createProject({format:'widescreen',data:{elementTransforms:{'3:1920x1080':{photo:{x:25,scale:1.2}}}}})
+ assert.equal(p.format,4)
+ assert.deepEqual(validateProject(p),p)
+ assert.equal(listLayouts()[0].formats[4].ratio,'16:9')
+ assert.equal(listLayouts()[0].formats[4].w,1920)
+ assert.equal(listLayouts()[0].formats[4].h,1080)
+ assert.equal(updateProject(p,{format:'landscape'}).format,3)
+})

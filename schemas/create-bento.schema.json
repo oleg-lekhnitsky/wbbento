@@ -26,7 +26,8 @@
         "square",
         "portrait",
         "story",
-        "landscape"
+        "landscape",
+        "widescreen"
       ]
     },
     "data": {
@@ -84,7 +85,7 @@
           "type": "object",
           "additionalProperties": false,
           "patternProperties": {
-            "^([0-9]|1[0-2]):(1080x1080|1080x1350|1080x1920|1200x628)$": {
+            "^([0-9]|1[0-2]):(1080x1080|1080x1350|1080x1920|1200x628|1920x1080)$": {
               "type": "object",
               "additionalProperties": false,
               "properties": {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {framingScope,captureFraming,applyFraming} from '~/lib/framing-defaults.mjs'
 import {uiName} from '~/lib/ui-ru.mjs'
 import {partnerLanguages,partnerLanguage,partnerCaption} from '~/lib/partner-languages.mjs'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '~/components/ui/resizable'
@@ -35,10 +36,43 @@ function setBlockStyle(style:string){if(!['headline','benefit','image','vehicle'
 const preset=ref(3), selected=ref('headline'), zoom=ref(75), exporting=ref(false), toast=ref(''), artboard=ref<HTMLElement>(), ready=ref(false)
 
 const formatIndex=ref(0),format=computed(()=>formats[formatIndex.value])
+const isDevelopment=import.meta.dev
+const framingDrafts=ref<Record<string,any>>({}),savedFramings=ref<Record<string,any>>({})
+function rememberFraming(){if(ready.value){const scope=framingScope(preset.value,format.value);framingDrafts.value[scope]=captureFraming(data,scope)}}
+function restoreFraming(){const scope=framingScope(preset.value,format.value);applyFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope])}
+function templatePreview(index:number){
+ if(index===preset.value)return data
+ const preview=createProject({layout:index,format:formatIndex.value}).data
+ const scope=framingScope(index,format.value)
+ applyFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope])
+ return preview
+}
+function changeFormat(index:number){
+ if(index===formatIndex.value)return
+ rememberFraming();formatIndex.value=index
+ const base=createProject({layout:preset.value,format:index}).data
+ const scope=framingScope(preset.value,format.value),framing=captureFraming(base,scope)
+ for(const key of ['image','artwork','vehicleImage'] as const)framing[key]=data[key]
+ framing.transforms=JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(data.elementTransforms?.[scope] || {}).filter(([key])=>['photo','artwork','vehicle'].includes(key)))))
+ applyFraming(data,scope,framing)
+ restoreFraming()
+}
+function saveAllFramingDefaults(){
+ if(!isDevelopment)return
+ rememberFraming()
+ try{const all={...savedFramings.value,...framingDrafts.value};localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedFramings.value=JSON.parse(JSON.stringify(all));notify('Кадрирование всех настроенных шаблонов и форматов сохранено по умолчанию на этом устройстве')}
+ catch(error){notify(error instanceof DOMException && error.name==='QuotaExceededError'?'Не удалось сохранить: недостаточно места. Экспортируйте настройки кадрирования в JSON.':'Не удалось сохранить настройки кадрирования. Экспортируйте их в JSON.')}
+}
+function exportFramingDefaults(){
+ if(!isDevelopment)return
+ rememberFraming();const content=JSON.stringify({...savedFramings.value,...framingDrafts.value},null,2)
+ const url=URL.createObjectURL(new Blob([content],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='framing-defaults.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
+}
+onMounted(()=>{if(!isDevelopment)return;try{savedFramings.value=JSON.parse(localStorage.getItem('wb-bento-framing-defaults') || '{}');restoreFraming()}catch{}})
 const showSafeGuides=ref(true)
 const settingsTab=ref('Block')
 const visibleBlocks=computed(()=>{
- const keys=preset.value>=8?['headline','image','partner']:preset.value===5?['image','benefit','partner']:formatIndex.value===3?['headline','benefit',...([1,6,7].includes(preset.value)?['vehicle']:['image']),'partner']
+ const keys=preset.value>=8 || preset.value===0?['headline','image','partner']:preset.value===5?['image','benefit','partner']:format.value.w/format.value.h>1.5?['headline','benefit',...([1,6,7].includes(preset.value)?['vehicle']:['image']),'partner']
  :preset.value===0?['headline','image','partner']:preset.value===5?['image','benefit','partner']:[1,6,7].includes(preset.value)?['headline','benefit','vehicle','partner']:['headline','benefit','image','partner']
  const names:Record<string,string>={headline:'Заголовок',benefit:'Преимущество',image:'Фото',vehicle:'Автомобиль',partner:'Официальный партнёр',contacts:'Контакты',format:'Формат'}
  return [...keys,'contacts'].map(key=>({key,name:names[key]}))
@@ -61,10 +95,18 @@ watch(visibleBlocks,blocks=>{if(selected.value && !blocks.some(block=>block.key=
 
 function applyPresetAssets(index:number){Object.assign(data,presetAssets[index],{vehicleScale:200,vehiclePosition:190})}
 
-function choosePreset(index:number){if(index===preset.value)return;preset.value=index;applyPresetAssets(index);data.blockStyles=presetStyles(index);data.benefitLabels=undefined;data.benefitLabel1=index===1?'комфорт':'физ лица';data.benefitLabel2=index===1?'электро':'ип';[data.heading,data.description,data.benefit]=presetCopy[index]}
+function choosePreset(index:number){if(index===preset.value)return;rememberFraming();preset.value=index;applyPresetAssets(index);data.blockStyles=presetStyles(index);data.benefitLabels=undefined;data.benefitLabel1=index===1?'комфорт':'физ лица';data.benefitLabel2=index===1?'электро':'ип';[data.heading,data.description,data.benefit]=presetCopy[index];restoreFraming()}
 
 function notify(message:string){toast.value=message;setTimeout(()=>toast.value='',3500)}
 function resetPhotoCrop(){
+ const scope=framingScope(preset.value,format.value),saved=savedFramings.value[scope]
+ if(saved && saved.image===data.image){
+  for(const key of ['position','positionY','photoZoom','photoFit'] as const)if(saved[key]!==undefined)(data as any)[key]=saved[key]
+  const transforms={...data.elementTransforms?.[scope]};delete transforms.photo
+  if(saved.transforms?.photo)transforms.photo=JSON.parse(JSON.stringify(saved.transforms.photo))
+  data.elementTransforms={...data.elementTransforms,[scope]:transforms}
+  notify('Восстановлено сохранённое кадрирование');return
+ }
  const reset=parseChatGptResult(JSON.stringify(currentProject())).project.data
  for(const key of ['position','positionY','photoZoom','photoFit','elementTransforms'] as const)(data as any)[key]=reset[key]
  notify('Кадрирование сброшено')
@@ -131,18 +173,18 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
 <div class="studio-shell">
  <header class="topbar">
   <div class="brand-home"><a class="wordmark" href="#" aria-label="WB Taxi Bento"><img class="header-logo" src="/wb-taxi-header.svg" alt="WB Taxi"/></a></div>
-  <div class="header-actions"><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
+  <div class="header-actions"><UiButton v-if="isDevelopment" variant="outline" size="sm" @click="saveAllFramingDefaults"><Save class="size-4"/>Сохранить кадрирование по умолчанию</UiButton><UiButton v-if="isDevelopment" variant="ghost" size="icon-sm" @click="exportFramingDefaults" aria-label="Экспорт настроек кадрирования" title="Экспорт настроек кадрирования"><Download class="size-4"/></UiButton><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
  </header>
  <ResizablePanelGroup direction="horizontal" class="workspace">
   <ResizablePanel :default-size="19" :min-size="15" :max-size="30" class="workspace-panel library-panel">
   <aside class="library"><div class="panel-heading"><span><Layers2 class="size-4"/>Шаблоны</span></div><div class="panel-tabs">
-   <div class="library-content"><section v-for="group in templateGroups" :key="group.name" class="template-group" :aria-label="group.name"><h2 class="template-group-title">{{group.name}}</h2><div class="preset-grid"><UiButton variant="ghost" v-for="i in group.indices" :key="i" :aria-label="uiName(presets[i])" class="preset-card" :class="{active:preset===i}" @click="choosePreset(i)"><div class="preset-preview"><BentoCanvas :data="i===preset?data:{...data,...presetAssets[i],benefitLabels:undefined,benefitLabel1:i===1?'комфорт':'физ лица',benefitLabel2:i===1?'электро':'ип',heading:presetCopy[i][0],description:presetCopy[i][1],benefit:presetCopy[i][2],blockStyles:presetStyles(i)}" :preset="i" :format="i===preset?format:formats[0]" miniature/></div><span>{{uiName(presets[i])}}</span><small v-if="preset===i" aria-label="Выбранный шаблон"><Check class="size-3"/></small></UiButton></div></section></div>
+   <div class="library-content"><section v-for="group in templateGroups" :key="group.name" class="template-group" :aria-label="group.name"><h2 class="template-group-title">{{group.name}}</h2><div class="preset-grid"><UiButton variant="ghost" v-for="i in group.indices" :key="i" :aria-label="uiName(presets[i])" class="preset-card" :class="{active:preset===i}" @click="choosePreset(i)"><div class="preset-preview"><BentoCanvas :data="templatePreview(i)" :preset="i" :format="format" miniature/></div><span>{{uiName(presets[i])}}</span><small v-if="preset===i" aria-label="Выбранный шаблон"><Check class="size-3"/></small></UiButton></div></section></div>
    </div>
   </aside></ResizablePanel><ResizableHandle :disabled="compactWorkspace" class="workspace-handle" aria-label="Изменить ширину панели шаблонов"/><ResizablePanel :default-size="56" :min-size="30" class="workspace-panel canvas-panel">
-  <main class="canvas-area" @pointerdown="clearCanvasSelection"><div class="canvas-toolbar"><UiBadge variant="outline" class="format-tag">{{format.w}} × {{format.h}} пикс.</UiBadge></div><div class="canvas-scroll"><div class="artboard-wrap" :style="{width:(formatIndex===2?330:formatIndex===3?700:560)*zoom/75+'px'}"><div ref="artboard" class="artboard"><BentoCanvas ref="previewCanvas" :data="data" :preset="preset" :format="format" :selected="selected" @select="selectBlock($event)" @photo-position="data.position=$event.x;data.positionY=$event.y" @copy-update="updateCopy($event)" @element-transform="updateElement($event)"/></div><div v-if="formatIndex===2 && showSafeGuides" class="story-guides" aria-hidden="true" :style="{aspectRatio:format.w+'/'+format.h}"><div class="story-guide-top" :style="{height:data.storySafeTop/format.h*100+'%'}"><span>Верхняя зона интерфейса · {{data.storySafeTop}} пикс.</span></div><div class="story-guide-bottom" :style="{height:data.storySafeBottom/format.h*100+'%'}"><span>Нижняя зона интерфейса · {{data.storySafeBottom}} пикс.</span></div></div><div class="below-canvas"><span><MousePointer2 class="size-3"/>Нажмите на блок, чтобы редактировать</span><span>{{format.ratio}}</span></div></div></div><div class="canvas-bottom"><span class="canvas-hint">Перетащите фото, чтобы настроить кадрирование</span><div class="zoom-control"><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.max(35,zoom-10)" aria-label="Уменьшить"><Minus class="size-4"/></UiButton><span>{{zoom}}%</span><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.min(115,zoom+10)" aria-label="Увеличить"><Plus class="size-4"/></UiButton></div></div></main></ResizablePanel><ResizableHandle :disabled="compactWorkspace" class="workspace-handle" aria-label="Изменить ширину панели настроек"/><ResizablePanel :default-size="25" :min-size="20" :max-size="38" class="workspace-panel inspector-panel">
+  <main class="canvas-area" @pointerdown="clearCanvasSelection"><div class="canvas-toolbar"><UiBadge variant="outline" class="format-tag">{{format.w}} × {{format.h}} пикс.</UiBadge></div><div class="canvas-scroll"><div class="artboard-wrap" :style="{width:(formatIndex===2?330:format.w/format.h>1.5?700:560)*zoom/75+'px'}"><div ref="artboard" class="artboard"><BentoCanvas ref="previewCanvas" :data="data" :preset="preset" :format="format" :selected="selected" @select="selectBlock($event)" @photo-position="data.position=$event.x;data.positionY=$event.y" @copy-update="updateCopy($event)" @element-transform="updateElement($event)"/></div><div v-if="formatIndex===2 && showSafeGuides" class="story-guides" aria-hidden="true" :style="{aspectRatio:format.w+'/'+format.h}"><div class="story-guide-top" :style="{height:data.storySafeTop/format.h*100+'%'}"><span>Верхняя зона интерфейса · {{data.storySafeTop}} пикс.</span></div><div class="story-guide-bottom" :style="{height:data.storySafeBottom/format.h*100+'%'}"><span>Нижняя зона интерфейса · {{data.storySafeBottom}} пикс.</span></div></div><div class="below-canvas"><span><MousePointer2 class="size-3"/>Нажмите на блок, чтобы редактировать</span><span>{{format.ratio}}</span></div></div></div><div class="canvas-bottom"><span class="canvas-hint">Перетащите фото, чтобы настроить кадрирование</span><div class="zoom-control"><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.max(35,zoom-10)" aria-label="Уменьшить"><Minus class="size-4"/></UiButton><span>{{zoom}}%</span><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.min(115,zoom+10)" aria-label="Увеличить"><Plus class="size-4"/></UiButton></div></div></main></ResizablePanel><ResizableHandle :disabled="compactWorkspace" class="workspace-handle" aria-label="Изменить ширину панели настроек"/><ResizablePanel :default-size="25" :min-size="20" :max-size="38" class="workspace-panel inspector-panel">
   <ChatGptExchange ref="chatgptFlow" :project="exchangeProject" @apply="openProject"/>
   <AssetsPanel/>
-  <FormatPanel v-model:format="formatIndex" v-model:safe-top="data.storySafeTop" v-model:safe-bottom="data.storySafeBottom" v-model:guides="showSafeGuides"/>
+  <FormatPanel :format="formatIndex" @update:format="changeFormat" v-model:safe-top="data.storySafeTop" v-model:safe-bottom="data.storySafeBottom" v-model:guides="showSafeGuides"/>
   <aside class="inspector"><div class="panel-heading"><span><Settings2 class="size-4"/>Настройки</span></div><div class="panel-tabs"><div class="inspector-content">
     <div class="block-picker"><UiButton variant="ghost" size="xs" v-for="block in visibleBlocks" :key="block.key" :class="{active:selected===block.key}" @click="selectBlock(block.key)">{{block.name}}</UiButton></div>
     <div v-if="selected && selected!=='headline'" class="inspector-heading"><h2>{{selectedBlockName}}</h2></div>
