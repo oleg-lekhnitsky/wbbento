@@ -57,7 +57,7 @@ const canApply=computed(()=>pending.value && pending.value.images.every((i:any)=
 watch(resultText,()=>{pending.value=undefined;uploads.value={};kept.value=[];status.value=''})
 defineExpose({open:()=>{opened.value=true}})
 async function prepareBrief(){
- if(imageMode.value==='driver' && (!nationality.value.trim() || Number(age.value)<18 || Number(age.value)>100))throw new Error('Укажите национальность и возраст от 18 до 100 лет.')
+ if(imageMode.value==='driver' && (!nationality.value.trim() || Number(age.value)<18 || Number(age.value)>55))throw new Error('Укажите национальность и возраст от 18 до 55 лет.')
 
  return brief.value
 }
@@ -128,7 +128,7 @@ function apply(){try{const project=applyChatGptImages(pending.value,uploads.valu
    <label>Новое фото<StudioSelect v-model="imageMode" label="Новое фото" :options="[{value:'keep',label:'Сохранить текущие изображения'},{value:'driver',label:'Создать фото водителя'},{value:'car',label:'Создать фото машины в движении по образцу'}]"/></label>
    <p v-if="imageMode==='car'" class="muted">Переносит выбранный автомобиль в новую уличную сцену с сохранением машины и оформления WB.</p>
    <p class="exchange-result-hint muted">{{imageMode==='keep'?'Вы получите обновлённый JSON баннера. Изображения останутся прежними.':'Сначала вы получите JSON баннера. Перед созданием фото ChatGPT спросит подтверждение.'}}</p>
-   <div v-if="imageMode==='driver'" class="two-fields"><label>Возраст<UiInput v-model="age" type="number" min="18" max="100" placeholder="35"/></label><label>Национальность<UiInput v-model="nationality" placeholder="Армянин"/></label></div>
+   <div v-if="imageMode==='driver'" class="two-fields"><label>Возраст<UiInput v-model="age" type="number" min="18" max="55" placeholder="35"/></label><label>Национальность<UiInput v-model="nationality" placeholder="Армянин"/></label></div>
    <div v-if="imageMode==='driver'" class="prompt-options" role="group" aria-label="Образцы фото водителя"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="driverStyle===style.id" @click="driverStyle=style.id"><img :src="'/assets/figma/'+style.image+'.png'" alt=""/><span>{{uiName(style.id)}}</span></UiButton></div>
    <div v-if="imageMode==='car'" class="prompt-options exchange-car-references" role="group" aria-label="Образцы автомобилей"><UiButton v-for="angle in angles" :key="angle.id" variant="ghost" :aria-pressed="carAngle===angle.id" @click="carAngle=angle.id"><img :src="angle.src" alt=""/><span>{{uiName(angle.id)}}</span></UiButton></div>
    <template v-if="imageMode==='car'">

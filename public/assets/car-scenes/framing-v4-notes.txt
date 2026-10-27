@@ -1,0 +1,4 @@
+Generated with built-in imagegen using front-left-no-plate.png. Base prompts: prompts-v4.json.
+All scenes use 4:5 output, front-left angle, car traveling left, fine film grain and generous overscan. Concrete wall and underpass use daylight; other scenes use sunset.
+A second image-edit pass extended each generated scene to reduce the car size and keep it around the center band, without changing the subject or environment. First four: halve car linear size, target width33%, anchor50/40. Last four: reduce linear size to65–75%, target33–36%, anchor50/45. Preserve vehicle geometry, original branding, panning and lighting; no trees, clouds or extra objects.
+Picker crop controls: position50, positionY45, zoom100, cover. Previous version files retained for comparison.

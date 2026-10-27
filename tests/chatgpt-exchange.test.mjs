@@ -94,9 +94,9 @@ test('imports use the photo source crop instead of carrying crop settings from a
  assert.deepEqual(preserved.data.elementTransforms,edited.data.elementTransforms)
 })
 
-test('all four driver references and the shared lighting/background direction are included',()=>{
+test('driver references and the shared lighting/background direction are included',()=>{
  const brief=createChatGptBrief(createProject(),{imageMode:'driver',driverStyle:'phone',siteOrigin:'https://bento.example',age:'40',nationality:'Armenian'})
- for(const name of ['driver-purple','driver-blue','driver-purple-phone','driver-phone'])assert.ok(brief.includes('https://bento.example/assets/figma/'+name+'.png'))
+ for(const name of ['driver-purple','driver-blue','driver-low-angle-v2','driver-phone','driver-wheel-dim'])assert.ok(brief.includes('https://bento.example/assets/figma/'+name+'.png'))
  assert.ok(brief.includes('"selected_driver_style": "phone"'))
  assert.ok(brief.includes('No trees, foliage, bushes, parks or greenery'))
  assert.ok(brief.includes('defined window-frame shadows'))

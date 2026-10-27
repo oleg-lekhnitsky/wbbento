@@ -565,7 +565,7 @@
           },
           {
             "id": "1:40",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -594,7 +594,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -605,7 +605,7 @@
           },
           {
             "id": "1:41",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -634,7 +634,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -809,7 +809,7 @@
                           "value": 0,
                           "units": "PERCENT"
                         },
-                        "text": "работайте в такси по своему графику",
+                        "text": "работайте в такси по своему графику",
                         "at1080": {
                           "x": 0.0,
                           "y": 189.557,
@@ -1984,7 +1984,7 @@
           },
           {
             "id": "1:112",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -2013,7 +2013,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -2024,7 +2024,7 @@
           },
           {
             "id": "1:113",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -2053,7 +2053,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -2888,7 +2888,7 @@
           },
           {
             "id": "1:67",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -2917,7 +2917,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -2928,7 +2928,7 @@
           },
           {
             "id": "1:68",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -2957,7 +2957,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -3893,7 +3893,7 @@
           },
           {
             "id": "1:261",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -3922,7 +3922,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -3933,7 +3933,7 @@
           },
           {
             "id": "1:262",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -3962,7 +3962,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -4894,7 +4894,7 @@
           },
           {
             "id": "1:186",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -4923,7 +4923,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -4934,7 +4934,7 @@
           },
           {
             "id": "1:187",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -4963,7 +4963,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -5621,7 +5621,7 @@
           },
           {
             "id": "1:283",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -5650,7 +5650,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -5661,7 +5661,7 @@
           },
           {
             "id": "1:284",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -5690,7 +5690,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -7012,7 +7012,7 @@
           },
           {
             "id": "1:156",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -7041,7 +7041,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -7052,7 +7052,7 @@
           },
           {
             "id": "1:157",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -7081,7 +7081,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,
@@ -8443,7 +8443,7 @@
           },
           {
             "id": "1:231",
-            "name": "+998 90 981 77 73",
+            "name": "+123 34 567 89 01",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -8472,7 +8472,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "+998 90 981 77 73",
+            "text": "+123 34 567 89 01",
             "at1080": {
               "x": 557.456,
               "y": 1001.014,
@@ -8483,7 +8483,7 @@
           },
           {
             "id": "1:232",
-            "name": "driver-pro.uz",
+            "name": "driver-pro.com",
             "type": "TEXT",
             "visible": true,
             "size": {
@@ -8512,7 +8512,7 @@
               "value": 3,
               "units": "PERCENT"
             },
-            "text": "driver-pro.uz",
+            "text": "driver-pro.com",
             "at1080": {
               "x": 45.047,
               "y": 1001.014,

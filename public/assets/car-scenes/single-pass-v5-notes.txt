@@ -1,0 +1,5 @@
+Eight photos generated directly from original public/assets/figma/cars/front-left-no-plate.png using built-in imagegen. No generative edit or outpainting pass afterward. Files: cinematic-panning-front-left-v5.png, boulevard-front-left-v5.png, residential-front-left-v5.png, business-front-left-v5.png.
+Base prompts: prompts-v5.json. Each prompt was prefixed: Single final generation directly from ORIGINAL attached car reference. ONE portrait4:5 photo. Highest priority SMALL car: 33% image width, center x50% y43%. Two thirds of canvas width is environment. Camera very far back, wide environmental photo, not hero close-up. Resolve all framing now; no subsequent image edits.
+Visual review: subject scale is larger than the numeric framing target. User approved adding the first four and generating the remaining four. All eight v5 images are now used by the picker. None received a second generative pass.
+
+Remaining files: concrete-wall-front-left-v5.png, underpass-front-left-v5.png, open-road-front-left-v5.png, plaster-street-front-left-v5.png. All base prompts are in prompts-v5.json; same prefix applies to every scene.

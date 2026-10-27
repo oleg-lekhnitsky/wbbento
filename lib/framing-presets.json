@@ -1,0 +1,1108 @@
+{
+  "3:1080x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-phone.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 81.32021,
+    "positionY": 70.81293,
+    "photoZoom": 167.13515,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "8:1080x1080": {
+    "blockStyles": {},
+    "image": "/assets/figma/driver35.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 72.56691810880876,
+    "positionY": 83.97956406373709,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.5031364300337215,
+        "rotation": 0
+      }
+    }
+  },
+  "8:1080x1350": {
+    "blockStyles": {},
+    "image": "/assets/figma/driver35.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 76.68182163158666,
+    "positionY": 100,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.3431613461803127,
+        "rotation": 0
+      }
+    }
+  },
+  "9:1080x1080": {
+    "blockStyles": {},
+    "image": "/assets/figma/driving-taxi.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 47.062863478461956,
+    "positionY": 15.744782210065312,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.592778516015221,
+        "rotation": 0
+      }
+    }
+  },
+  "11:1080x1080": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-low-angle-right-v2.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 100,
+    "positionY": 68.30184705686547,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.32103753747,
+        "rotation": 0
+      }
+    }
+  },
+  "9:1080x1350": {
+    "blockStyles": {},
+    "image": "/assets/figma/driving-taxi.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 2.0099729576330887,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.4422305540954177,
+        "rotation": 0
+      }
+    }
+  },
+  "9:1080x1920": {
+    "blockStyles": {},
+    "image": "/assets/figma/driving-taxi.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 42.66916924208974,
+    "positionY": 6.779485562346387,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.3705406968983662,
+        "rotation": 0
+      }
+    }
+  },
+  "9:1200x628": {
+    "blockStyles": {},
+    "image": "/assets/figma/driving-taxi.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 13.519855947386096,
+    "positionY": 32.32414798413646,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.355623987312208,
+        "rotation": 0
+      }
+    }
+  },
+  "9:1920x1080": {
+    "blockStyles": {},
+    "image": "/assets/figma/driving-taxi.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 31.41061933576059,
+    "positionY": 34.565274730553796,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.6755789220110542,
+        "rotation": 0
+      }
+    }
+  },
+  "8:1200x628": {
+    "blockStyles": {},
+    "image": "/assets/figma/driver35.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 64.45430902736409,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "8:1080x1920": {
+    "blockStyles": {},
+    "image": "/assets/figma/driver35.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 59.20323265356737,
+    "positionY": 100,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.3232479936847938,
+        "rotation": 0
+      }
+    }
+  },
+  "10:1080x1080": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-phone.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 84.08641902530725,
+    "positionY": 85.2030120991807,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.1500830112695646,
+        "rotation": 0
+      }
+    }
+  },
+  "3:1080x1350": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-phone.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 81.32021,
+    "positionY": 70.81293,
+    "photoZoom": 167.13515,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -2.139508928571429,
+        "y": 26.758928571428573,
+        "scale": 1,
+        "rotation": 0
+      }
+    }
+  },
+  "3:1080x1920": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-phone.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 81.32021,
+    "positionY": 70.81293,
+    "photoZoom": 167.13515,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "3:1200x628": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-phone.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 81.32021,
+    "positionY": 70.81293,
+    "photoZoom": 167.13515,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": 2.590691425224791,
+        "y": 22.69611051779378,
+        "scale": 1,
+        "rotation": 0
+      }
+    }
+  },
+  "3:1920x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-phone.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 77.42404684432202,
+    "positionY": 67.34894152546902,
+    "photoZoom": 167.13515,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -65.13900850931891,
+        "y": 60.57015881765253,
+        "scale": 1.531225275240118,
+        "rotation": 0
+      }
+    }
+  },
+  "2:1920x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-blue.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.81725,
+    "positionY": 80.43347,
+    "photoZoom": 122.43367,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -88.11666724084475,
+        "y": 56.54907499913874,
+        "scale": 1.476606399559668,
+        "rotation": 0
+      }
+    }
+  },
+  "4:1920x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple-phone.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 59.4503,
+    "positionY": 39.36971,
+    "photoZoom": 126.45419,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -137.3774416922176,
+        "y": -251.85671960588417,
+        "scale": 2.0532744325644114,
+        "rotation": 0
+      }
+    }
+  },
+  "5:1920x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/framing/6682cb21aa8177b4.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 92.01244800238797,
+    "positionY": 61.45843851181709,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.757565520625825,
+        "rotation": 0
+      }
+    }
+  },
+  "6:1920x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -55.264452061873435,
+        "y": 53.05456988321218,
+        "scale": 1.5687507531642695,
+        "rotation": 0
+      },
+      "vehicle": {
+        "x": 44.64739725083542,
+        "y": 77.79636200778586,
+        "scale": 1.2453133840310586,
+        "rotation": 0
+      }
+    }
+  },
+  "7:1920x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -88.11666724084475,
+        "y": 39.605711923381676,
+        "scale": 1.5612058385579526,
+        "rotation": 0
+      }
+    }
+  },
+  "1:1920x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/keys.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "artwork": {
+        "x": -39.00248044923692,
+        "y": -320.6283804733524,
+        "scale": 2.700683892478898,
+        "rotation": 0
+      }
+    }
+  },
+  "0:1920x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 25.341205504469723,
+    "positionY": 39.80872102741016,
+    "photoZoom": 144.12543,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "1:1080x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/keys.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "12:1920x1080": {
+    "blockStyles": {},
+    "image": "/assets/car-scenes/concrete-wall-front-left-right-v6.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 71.56991543246664,
+    "positionY": 48.26620077285867,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.057873471816129,
+        "rotation": 0
+      }
+    }
+  },
+  "8:1920x1080": {
+    "blockStyles": {},
+    "image": "/assets/figma/driver35.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 66.18914606073722,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "12:1080x1080": {
+    "blockStyles": {},
+    "image": "/assets/car-scenes/concrete-wall-front-left-right-v6.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 100,
+    "positionY": 65.79196430116716,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.2951055150614885,
+        "rotation": 0
+      }
+    }
+  },
+  "2:1080x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-blue.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.81725,
+    "positionY": 80.43347,
+    "photoZoom": 122.43367,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "0:1080x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.6002,
+    "positionY": 56.58389,
+    "photoZoom": 144.12543,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "5:1080x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/framing/6682cb21aa8177b4.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "11:1080x1350": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-low-angle-right-v2.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 100,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.195019202129416,
+        "rotation": 0
+      }
+    }
+  },
+  "11:1080x1920": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-low-angle-right-v2.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 80.52346789883268,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "11:1200x628": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-low-angle-right-v2.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "11:1920x1080": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-low-angle-right-v2.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "12:1080x1350": {
+    "blockStyles": {},
+    "image": "/assets/car-scenes/concrete-wall-front-left-right-v6.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 100,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.1430884907428092,
+        "rotation": 0
+      }
+    }
+  },
+  "12:1080x1920": {
+    "blockStyles": {},
+    "image": "/assets/car-scenes/concrete-wall-front-left-right-v6.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 75.41494406614785,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.049134329113368,
+        "rotation": 0
+      }
+    }
+  },
+  "12:1200x628": {
+    "blockStyles": {},
+    "image": "/assets/car-scenes/concrete-wall-front-left-right-v6.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 66.97802224912408,
+    "positionY": 44.52229254509481,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {
+      "photo": {
+        "x": 0,
+        "y": 0,
+        "scale": 1.1358768182186922,
+        "rotation": 0
+      }
+    }
+  },
+  "0:1080x1350": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.6002,
+    "positionY": 56.58389,
+    "photoZoom": 144.12543,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "0:1080x1920": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.6002,
+    "positionY": 56.58389,
+    "photoZoom": 144.12543,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "0:1200x628": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.6002,
+    "positionY": 56.58389,
+    "photoZoom": 144.12543,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "1:1080x1350": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/keys.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "1:1080x1920": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/keys.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "1:1200x628": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/keys.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "2:1080x1350": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-blue.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.81725,
+    "positionY": 80.43347,
+    "photoZoom": 122.43367,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "2:1080x1920": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-blue.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.81725,
+    "positionY": 80.43347,
+    "photoZoom": 122.43367,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "2:1200x628": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-blue.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 32.81725,
+    "positionY": 80.43347,
+    "photoZoom": 122.43367,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "4:1080x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple-phone.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 59.4503,
+    "positionY": 39.36971,
+    "photoZoom": 126.45419,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "4:1080x1350": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple-phone.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 59.4503,
+    "positionY": 39.36971,
+    "photoZoom": 126.45419,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "4:1080x1920": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple-phone.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 59.4503,
+    "positionY": 39.36971,
+    "photoZoom": 126.45419,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "4:1200x628": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple-phone.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 59.4503,
+    "positionY": 39.36971,
+    "photoZoom": 126.45419,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "5:1080x1350": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/framing/6682cb21aa8177b4.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "5:1080x1920": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/framing/6682cb21aa8177b4.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "5:1200x628": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/framing/6682cb21aa8177b4.png",
+    "artwork": "/assets/figma/wallet.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "6:1080x1080": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "6:1080x1350": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "6:1080x1920": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "6:1200x628": {
+    "blockStyles": {
+      "headline": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "7:1080x1080": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "7:1080x1350": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "7:1080x1920": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "7:1200x628": {
+    "blockStyles": {
+      "benefit": "purple"
+    },
+    "image": "/assets/figma/driver-purple.png",
+    "artwork": "/assets/figma/taxi-light.png",
+    "vehicleImage": "/assets/figma/taxi-full.svg",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "10:1080x1350": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-phone.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "10:1080x1920": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-phone.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "10:1200x628": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-phone.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  },
+  "10:1920x1080": {
+    "blockStyles": {},
+    "image": "/assets/driver-scenes/uzbek-35-phone.png",
+    "artwork": "",
+    "vehicleImage": "",
+    "position": 50,
+    "positionY": 50,
+    "photoZoom": 100,
+    "photoFit": "cover",
+    "vehicleScale": 200,
+    "vehiclePosition": 190,
+    "transforms": {}
+  }
+}

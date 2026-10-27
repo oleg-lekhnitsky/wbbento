@@ -1,0 +1,3 @@
+Seven ready-made 35-year-old Uzbek male driver photos, one for every driverPhotoStyles preset. Generated with built-in imagegen in one pass per asset, using the original preset photo only as a camera/scene reference and requesting a new person. No second generative edit, outpainting or retouch pass.
+Prompts: prompts.json. Each base prompt was prefixed: Single-pass NEW photograph. Attached image is camera/scene reference only, not identity. Depict a NEW35-year-old Uzbek male driver, age-appropriate natural face with subtle lines, NOT the same young man. ONE portrait4:5. Wheel preset also specified darker natural cabin, NO FLASH.
+Assets: uzbek-35-{preset-id}.png. The set is a demographic/scene collection, not a guaranteed single consistent identity.

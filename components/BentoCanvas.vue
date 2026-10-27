@@ -84,7 +84,7 @@ const fitText = useFittedCopy(canvas, () => [props.data.heading, props.data.desc
 defineExpose({fitText})
 </script>
 <template>
-<div ref="canvas" class="creative reference-creative" :class="['layout-'+preset,{miniature, 'simple-creative':preset>=8, landscape:format.w/format.h>1.5, portrait:format.h/format.w>1.5}]" :style="frameStyle" :tabindex="miniature?undefined:0" @pointerdown.capture="editor.down" @pointermove="editor.move" @pointerup="editor.end" @pointercancel="editor.end" @keydown="editor.keydown" @dblclick="elementDoubleClick">
+<div ref="canvas" class="creative reference-creative" :class="['layout-'+preset,{miniature, widescreen:format.w===1920 && format.h===1080, 'simple-creative':preset>=8, landscape:format.w/format.h>1.5, portrait:format.h/format.w>1.5}]" :style="frameStyle" :tabindex="miniature?undefined:0" @pointerdown.capture="editor.down" @pointermove="editor.move" @pointerup="editor.end" @pointercancel="editor.end" @keydown="editor.keydown" @dblclick="elementDoubleClick">
  <div class="bento-grid">
   <div class="tile headline" :class="{selected:selected==='headline', 'block-purple':data.blockStyles?.headline==='purple', 'block-pink':data.blockStyles?.headline==='pink'}" @click="emit('select','headline')">
    <div class="partner-brand"><img v-if="data.logo" :src="data.logo" alt="Логотип партнёра"/><template v-else><span><BrandText :text="data.partner"/></span></template></div>

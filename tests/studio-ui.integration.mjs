@@ -18,7 +18,7 @@ try{
  await page.getByRole('tab',{name:'Layouts',exact:true}).click();await page.locator('.preset-card').nth(3).click()
  await page.getByRole('tab',{name:'Баннер',exact:true}).click();await page.getByRole('button',{name:'Landscape',exact:false}).click();assert.ok((await page.locator('.reference-creative:not(.miniature)').getAttribute('class')).includes('landscape'))
  await page.getByRole('button',{name:'Square post',exact:false}).click();await page.locator('.artboard .photograph').click()
- await page.getByRole('button',{name:'Создать похожее фото водителя',exact:true}).click();const driver=page.locator('.driver-prompt:not(.car-prompt)');await driver.getByLabel('Возраст',{exact:true}).fill('35');await driver.getByLabel('Национальность',{exact:true}).fill('Армянин')
+ await page.getByRole('button',{name:'Создать фото водителя',exact:true}).click();const driver=page.locator('.driver-prompt:not(.car-prompt)');await driver.getByLabel('Возраст',{exact:true}).fill('35');await driver.getByLabel('Национальность',{exact:true}).fill('Армянин')
  assert.ok((await driver.getByLabel('Промпт для изображения',{exact:true}).inputValue()).includes('35-year-old'))
  await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copied=text}}}))
  await driver.getByRole('button',{name:'Скопировать промпт',exact:true}).click();assert.ok((await page.evaluate(()=>window.copied)).includes('Армянин'))

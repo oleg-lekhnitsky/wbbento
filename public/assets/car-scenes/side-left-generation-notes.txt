@@ -1,0 +1,3 @@
+Eight left-side profile scenes generated with built-in imagegen, one pass per photo, directly from public/assets/figma/cars/side-left.png. No generative edits afterward.
+Base prompts: prompts-side-left.json. Prefix: ONE portrait4:5 photo. Single final generation from ORIGINAL attached side-left car reference. TRUE LEFT SIDE PROFILE, nose points LEFT, camera perpendicular to side, no front three-quarter perspective. Car small33% width, x50% y43%, generous cropping environment. Road and blur parallel to leftward travel. Preserve wb taxi260 and exact magenta violet panels, no second pass.
+Files: {scene-id}-side-left.png. Concrete wall and underpass daylight; other scenes sunset.

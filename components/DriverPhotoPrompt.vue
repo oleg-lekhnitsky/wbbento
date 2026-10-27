@@ -11,7 +11,7 @@ const props=defineProps<{modelValue:{age:string;nationality:string;style:string}
 const emit=defineEmits(['update:modelValue'])
 const options=driverPhotoStyles
 const chosen=computed(()=>options.find(option=>option.id===props.modelValue.style)||options[0])
-const valid=computed(()=>props.modelValue.nationality.trim().length>0 && Number(props.modelValue.age)>=18 && Number(props.modelValue.age)<=100)
+const valid=computed(()=>props.modelValue.nationality.trim().length>0 && Number(props.modelValue.age)>=18 && Number(props.modelValue.age)<=55)
 const prompt=computed(()=>driverPhotoPrompt(props.modelValue,props.ratio,props.preset))
 const output=ref<HTMLTextAreaElement | {$el:HTMLTextAreaElement}>(),status=ref('')
 function update(key:string,value:string){status.value='';emit('update:modelValue',{...props.modelValue,[key]:value})}
@@ -28,10 +28,10 @@ async function copy(){
 </script>
 <template>
  <UiCollapsible class="driver-prompt">
-  <UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Sparkles class="size-4"/><span>Создать похожее фото водителя</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content">
+  <UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Sparkles class="size-4"/><span>Создать фото водителя</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content">
   <p class="muted">Выберите образец, укажите возраст и национальность, затем скопируйте промпт в генератор изображений.</p>
   <div class="two-fields">
-   <label>Возраст<UiInput type="number" min="18" max="100" placeholder="Например, 35" :model-value="modelValue.age" @update:model-value="value=>update('age',String(value))"/></label>
+   <label>Возраст<UiInput type="number" min="18" max="55" placeholder="Например, 35" :model-value="modelValue.age" @update:model-value="value=>update('age',String(value))"/></label>
    <label>Национальность<UiInput placeholder="Например, узбек" :model-value="modelValue.nationality" @update:model-value="value=>update('nationality',String(value))"/></label>
   </div>
   <div class="prompt-options" role="group" aria-label="Стиль фото водителя">
@@ -40,7 +40,7 @@ async function copy(){
   <label>Промпт для изображения<UiTextarea class="prompt-preview" ref="output" :model-value="prompt" readonly rows="7" spellcheck="false"/></label>
   <p class="muted">Скопируйте изображение и промпт отдельно в генератор изображений.</p>
   <div class="reference-copy-actions"><UiButton variant="outline" class="button" type="button" :disabled="!valid" @click="copyImage"><ImageIcon class="size-4"/>Скопировать изображение</UiButton><UiButton variant="outline" class="button" type="button" :disabled="!valid" @click="copy"><Copy class="size-4"/>Скопировать промпт</UiButton></div>
-  <p v-if="!valid" class="muted">Укажите национальность и возраст от 18 до 100 лет.</p>
+  <p v-if="!valid" class="muted">Укажите национальность и возраст от 18 до 55 лет.</p>
   <p role="status" aria-live="polite">{{status}}</p>
  </UiCollapsibleContent></UiCollapsible>
 </template>

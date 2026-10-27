@@ -690,7 +690,7 @@
   font-size: calc(var(--support-size) * 0.75);
 }
 .reference-creative.landscape .benefit h3 {
-  font-size: calc(var(--benefit-size) * 0.85);
+  font-size: 3.5cqw;
 }
 .reference-creative.landscape .pills span {
   font-size: calc(var(--label-size) * 0.85);
@@ -940,6 +940,20 @@
   font-size: calc(var(--location-font) * 0.75);
   height: calc(var(--location-height) * 0.75);
   padding-inline: calc(var(--location-pad-x) * 0.75);
+}
+/* Widescreen needs type proportional to its canvas, rather than the
+   reduced pixel sizes used by the smaller 1200 × 628 layout. */
+.reference-creative.landscape.widescreen:not(.simple-creative) .headline p,
+.reference-creative.landscape.widescreen:not(.simple-creative) .creative-footer {
+  font-size: 1.85cqw;
+}
+.reference-creative.landscape.widescreen:not(.simple-creative) .benefit .pills > span {
+  font-size: 1.5cqw;
+}
+.reference-creative.landscape.widescreen:not(.simple-creative) .city-list > .city {
+  font-size: 1.65cqw;
+  height: var(--location-height);
+  padding-inline: var(--location-pad-x);
 }
 .reference-creative .benefit.figma-art-overflow {
   overflow: visible;

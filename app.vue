@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import {framingScope,captureFraming,applyFraming} from '~/lib/framing-defaults.mjs'
+import { Collapsible as UiCollapsible, CollapsibleTrigger as UiCollapsibleTrigger, CollapsibleContent as UiCollapsibleContent } from '~/components/ui/collapsible'
+import { ChevronDown, Images } from '@lucide/vue'
+import {carStreets,driverPhotoStyles} from '~/lib/image-prompts.mjs'
+import {framingScope,captureFraming,applyFraming,applyTemplateFraming,templateDefaultsFromFramings} from '~/lib/framing-defaults.mjs'
+import framingPresets from '~/lib/framing-presets.json'
 import {uiName} from '~/lib/ui-ru.mjs'
 import {partnerLanguages,partnerLanguage,partnerCaption} from '~/lib/partner-languages.mjs'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '~/components/ui/resizable'
@@ -37,14 +41,17 @@ const preset=ref(3), selected=ref('headline'), zoom=ref(75), exporting=ref(false
 
 const formatIndex=ref(0),format=computed(()=>formats[formatIndex.value])
 const isDevelopment=import.meta.dev
-const framingDrafts=ref<Record<string,any>>({}),savedFramings=ref<Record<string,any>>({})
+const templateDefaults=templateDefaultsFromFramings(framingPresets,presetAssets)
+const savedPresetStyles=ref<Record<string,Record<string,string>>>(templateDefaults.styles)
+const savedPresetPhotos=ref<Record<string,string>>(templateDefaults.photos)
+const framingDrafts=ref<Record<string,any>>({}),savedFramings=ref<Record<string,any>>(structuredClone(framingPresets))
 function rememberFraming(){if(ready.value){const scope=framingScope(preset.value,format.value);framingDrafts.value[scope]=captureFraming(data,scope)}}
-function restoreFraming(){const scope=framingScope(preset.value,format.value);applyFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope])}
+function restoreFraming(){const scope=framingScope(preset.value,format.value);applyTemplateFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope],savedPresetPhotos.value[preset.value],savedPresetStyles.value[preset.value])}
 function templatePreview(index:number){
  if(index===preset.value)return data
  const preview=createProject({layout:index,format:formatIndex.value}).data
  const scope=framingScope(index,format.value)
- applyFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope])
+ applyTemplateFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope],savedPresetPhotos.value[index],savedPresetStyles.value[index])
  return preview
 }
 function changeFormat(index:number){
@@ -53,6 +60,7 @@ function changeFormat(index:number){
  const base=createProject({layout:preset.value,format:index}).data
  const scope=framingScope(preset.value,format.value),framing=captureFraming(base,scope)
  for(const key of ['image','artwork','vehicleImage'] as const)framing[key]=data[key]
+ framing.blockStyles={...data.blockStyles}
  framing.transforms=JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(data.elementTransforms?.[scope] || {}).filter(([key])=>['photo','artwork','vehicle'].includes(key)))))
  applyFraming(data,scope,framing)
  restoreFraming()
@@ -60,15 +68,22 @@ function changeFormat(index:number){
 function saveAllFramingDefaults(){
  if(!isDevelopment)return
  rememberFraming()
- try{const all={...savedFramings.value,...framingDrafts.value};localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedFramings.value=JSON.parse(JSON.stringify(all));notify('Кадрирование всех настроенных шаблонов и форматов сохранено по умолчанию на этом устройстве')}
+ try{const all={...savedFramings.value,...framingDrafts.value};const photos={...savedPresetPhotos.value,[preset.value]:data.image};const styles={...savedPresetStyles.value,[preset.value]:{...data.blockStyles}};localStorage.setItem('wb-bento-preset-styles',JSON.stringify(styles));localStorage.setItem('wb-bento-preset-photos',JSON.stringify(photos));localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedPresetStyles.value=styles;savedPresetPhotos.value=photos;savedFramings.value=JSON.parse(JSON.stringify(all));notify('Фото и цвета блоков назначены шаблону; кадрирование сохранено по форматам')}
  catch(error){notify(error instanceof DOMException && error.name==='QuotaExceededError'?'Не удалось сохранить: недостаточно места. Экспортируйте настройки кадрирования в JSON.':'Не удалось сохранить настройки кадрирования. Экспортируйте их в JSON.')}
 }
 function exportFramingDefaults(){
  if(!isDevelopment)return
- rememberFraming();const content=JSON.stringify({...savedFramings.value,...framingDrafts.value},null,2)
+ rememberFraming();const all={...savedFramings.value,...framingDrafts.value}
+ for(let index=0;index<presets.length;index++)for(let fi=0;fi<formats.length;fi++){
+  const scope=framingScope(index,formats[fi]),preview=createProject({layout:index,format:fi}).data
+  const photo=index===preset.value?data.image:savedPresetPhotos.value[index]
+  const styles=index===preset.value?data.blockStyles:savedPresetStyles.value[index]
+  applyTemplateFraming(preview,scope,all[scope],photo,styles);all[scope]=captureFraming(preview,scope)
+ }
+ const content=JSON.stringify(all,null,2)
  const url=URL.createObjectURL(new Blob([content],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='framing-defaults.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
 }
-onMounted(()=>{if(!isDevelopment)return;try{savedFramings.value=JSON.parse(localStorage.getItem('wb-bento-framing-defaults') || '{}');restoreFraming()}catch{}})
+onMounted(()=>{if(!isDevelopment)return;try{savedPresetStyles.value={...templateDefaults.styles,...JSON.parse(localStorage.getItem('wb-bento-preset-styles') || '{}')};savedPresetPhotos.value={...templateDefaults.photos,...JSON.parse(localStorage.getItem('wb-bento-preset-photos') || '{}')};savedFramings.value={...structuredClone(framingPresets),...JSON.parse(localStorage.getItem('wb-bento-framing-defaults') || '{}')};for(const index of [11,12]){const previous=index===11?'/assets/driver-scenes/uzbek-35-low-angle.png':'/assets/car-scenes/concrete-wall-front-left-v5.png';if(savedPresetPhotos.value[index]===previous)savedPresetPhotos.value[index]=templateDefaults.photos[index]}restoreFraming()}catch{}})
 const showSafeGuides=ref(true)
 const settingsTab=ref('Block')
 const visibleBlocks=computed(()=>{
@@ -111,6 +126,19 @@ function resetPhotoCrop(){
  for(const key of ['position','positionY','photoZoom','photoFit','elementTransforms'] as const)(data as any)[key]=reset[key]
  notify('Кадрирование сброшено')
 }
+const readyDriverPhoto=(id:string)=>'/assets/driver-scenes/uzbek-35-'+id+(id==='phone'?'-v2':id==='low-angle'?'-right-v2':'')+'.png'
+function chooseReadyDriverPhoto(id:string){
+ replaceAsset('image',readyDriverPhoto(id))
+ data.position=50;data.positionY=45
+ data.imagePrompt={...data.imagePrompt,age:'35',nationality:'Uzbek',style:id}
+}
+const readyCarAngle=ref('front-left')
+const readyCarPhoto=(id:string)=>'/assets/car-scenes/'+id+(readyCarAngle.value==='side-left'?'-side-left.png':id==='concrete-wall'?'-front-left-right-v6.png':'-front-left-v5.png')
+function chooseReadyCarPhoto(id:string){
+ replaceAsset('image',readyCarPhoto(id))
+ data.position=50;data.positionY=45
+ data.carPrompt={...data.carPrompt,angle:readyCarAngle.value,street:id,time:['concrete-wall','underpass'].includes(id)?'day':'sunset'}
+}
 function replaceAsset(key:string,source:string){
  Object.assign(data,assetPlacementReset(data,key));(data as any)[key]=source
 }
@@ -131,8 +159,8 @@ function pasteImage(event:ClipboardEvent){
 }
 onMounted(()=>document.addEventListener('paste',pasteImage))
 onBeforeUnmount(()=>document.removeEventListener('paste',pasteImage))
-function save(){try{localStorage.setItem('wb-bento',JSON.stringify({data,preset:preset.value,format:formatIndex.value}));notify('Проект сохранён на этом устройстве')}catch{notify('Хранилище заполнено. Попробуйте изображение меньшего размера.')}}
-onMounted(()=>{try{const saved=JSON.parse(localStorage.getItem('wb-bento')||'null');if(saved){Object.assign(data,saved.data);data.vehicleImage=normalizeVehicleAsset(data.vehicleImage);const assets=presetAssets[saved.preset] || presetAssets[3];if(!data.image || data.image.startsWith('https://images.unsplash.com/'))data.image=assets.image;if(!data.artwork)data.artwork=assets.artwork;if(!data.vehicleImage)data.vehicleImage=assets.vehicleImage;if(saved.data.photoZoom===undefined && data.image===assets.image){data.position=assets.position;data.positionY=assets.positionY;data.photoZoom=assets.photoZoom;}data.wbLogo='/wb-taxi.svg';if(['#7015ff','#5421d6','#242424'].includes(data.accent.toLowerCase()))data.accent='#661AFF';preset.value=Number.isInteger(saved.preset) && saved.preset>=0 && saved.preset<presets.length?saved.preset:3;if(!saved.data.blockStyles || Object.keys(saved.data.blockStyles).length===0)data.blockStyles=presetStyles(preset.value);if(preset.value===7 && data.benefit==='аренда авто от 150000 сом/день')data.benefit='аренда авто\nот 150000\nсом/день';formatIndex.value=saved.format}}catch{}ready.value=true})
+function save(){if(isDevelopment)saveAllFramingDefaults();try{localStorage.setItem('wb-bento',JSON.stringify({data,preset:preset.value,format:formatIndex.value}));notify('Проект сохранён на этом устройстве')}catch{notify('Хранилище заполнено. Попробуйте изображение меньшего размера.')}}
+onMounted(()=>{try{const saved=JSON.parse(localStorage.getItem('wb-bento')||'null');if(saved){Object.assign(data,saved.data);data.vehicleImage=normalizeVehicleAsset(data.vehicleImage);const assets=presetAssets[saved.preset] || presetAssets[3];if(!data.image || data.image.startsWith('https://images.unsplash.com/'))data.image=assets.image;if(!data.artwork)data.artwork=assets.artwork;if(!data.vehicleImage)data.vehicleImage=assets.vehicleImage;if(saved.data.photoZoom===undefined && data.image===assets.image){data.position=assets.position;data.positionY=assets.positionY;data.photoZoom=assets.photoZoom;}data.wbLogo='/wb-taxi.svg';if(['#7015ff','#5421d6','#242424'].includes(data.accent.toLowerCase()))data.accent='#661AFF';preset.value=Number.isInteger(saved.preset) && saved.preset>=0 && saved.preset<presets.length?saved.preset:3;if(!saved.data.blockStyles || Object.keys(saved.data.blockStyles).length===0)data.blockStyles=presetStyles(preset.value);if(preset.value===7 && data.benefit==='аренда авто от 150000 сом/день')data.benefit='аренда авто\nот 150000\nсом/день';formatIndex.value=saved.format}}catch{}restoreFraming();ready.value=true})
 async function renderProjectPng(){
  if(!artboard.value)throw new Error('Баннер ещё не готов')
  const previousSelection=selected.value;selected.value=''
@@ -173,7 +201,7 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
 <div class="studio-shell">
  <header class="topbar">
   <div class="brand-home"><a class="wordmark" href="#" aria-label="WB Taxi Bento"><img class="header-logo" src="/wb-taxi-header.svg" alt="WB Taxi"/></a></div>
-  <div class="header-actions"><UiButton v-if="isDevelopment" variant="outline" size="sm" @click="saveAllFramingDefaults"><Save class="size-4"/>Сохранить кадрирование по умолчанию</UiButton><UiButton v-if="isDevelopment" variant="ghost" size="icon-sm" @click="exportFramingDefaults" aria-label="Экспорт настроек кадрирования" title="Экспорт настроек кадрирования"><Download class="size-4"/></UiButton><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
+  <div class="header-actions"><UiButton v-if="isDevelopment" variant="outline" size="sm" @click="saveAllFramingDefaults"><Save class="size-4"/>Сохранить настройки шаблона</UiButton><UiButton v-if="isDevelopment" variant="ghost" size="icon-sm" @click="exportFramingDefaults" aria-label="Экспорт настроек кадрирования" title="Экспорт настроек кадрирования"><Download class="size-4"/></UiButton><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
  </header>
  <ResizablePanelGroup direction="horizontal" class="workspace">
   <ResizablePanel :default-size="19" :min-size="15" :max-size="30" class="workspace-panel library-panel">
@@ -207,6 +235,8 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
 
      <DriverPhotoPrompt v-model="data.imagePrompt" :ratio="format.ratio" :preset="preset"/>
      <CarPhotoPrompt v-model="data.carPrompt" :ratio="format.ratio" :preset="preset"/>
+     <UiCollapsible class="driver-prompt ready-car-photos"><UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Images class="size-4"/><span>Готовые фото водителя</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content"><div class="prompt-options ready-car-grid" role="group" aria-label="Готовые фото водителя"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="data.image===readyDriverPhoto(style.id)" @click="chooseReadyDriverPhoto(style.id)"><img :src="readyDriverPhoto(style.id)" alt="" loading="lazy"/><span>{{uiName(style.id)}}</span><Check v-if="data.image===readyDriverPhoto(style.id)" class="ready-car-check size-4"/></UiButton></div></UiCollapsibleContent></UiCollapsible>
+     <UiCollapsible class="driver-prompt ready-car-photos"><UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Images class="size-4"/><span>Готовые фото автомобиля</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content"><label>Ракурс<StudioSelect label="Ракурс готовых фото автомобиля" v-model="readyCarAngle" :options="[{value:'front-left',label:'Спереди слева'},{value:'side-left',label:'Левый бок'}]"/></label><div class="prompt-options ready-car-grid" role="group" aria-label="Готовые фото автомобиля"><UiButton v-for="scene in carStreets" :key="scene.id" variant="ghost" :aria-pressed="data.image===readyCarPhoto(scene.id)" @click="chooseReadyCarPhoto(scene.id)"><img :src="readyCarPhoto(scene.id)" alt="" loading="lazy"/><span>{{uiName(scene.id)}}</span><Check v-if="data.image===readyCarPhoto(scene.id)" class="ready-car-check size-4"/></UiButton></div></UiCollapsibleContent></UiCollapsible>
      <label class="photo-upload"><img :src="data.image"/><span><Upload class="size-4"/>Заменить фото</span><input type="file" accept="image/*" @change="upload($event,'image')"/></label>
 
      <UiButton class="reset-photo-crop" variant="outline" @click="resetPhotoCrop">Сбросить кадрирование</UiButton>
