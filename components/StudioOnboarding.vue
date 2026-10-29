@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {DialogRoot,DialogPortal,DialogOverlay,DialogContent,DialogTitle,DialogDescription} from 'reka-ui'
+import {onboardingTypography} from '~/lib/russian-typography.mjs'
 import {onboardingPosition} from '~/lib/onboarding-position.mjs'
 import {Button as UiButton} from '~/components/ui/button'
 import {ArrowLeft,ArrowRight,Check,X} from '@lucide/vue'
@@ -20,7 +21,7 @@ const steps=[
  {title:'Для работы в других редакторах',text:'Работаете в Figma или другом редакторе? В разделе «Материалы» можно скачать шрифты и блоки официального партнёра для своих макетов.',target:'[data-onboarding="materials"]',optional:true},
  {title:'Скачайте готовый баннер',text:'Нажмите «Экспорт PNG», чтобы скачать изображение. «Сохранить проект» сохранит редактируемый баннер в этом браузере.',target:'[data-onboarding="export"]'},
  {title:'Подсказки всегда под рукой',text:'Чтобы пройти обучение ещё раз, нажмите на значок вопроса в верхней панели. Здесь можно в любой момент вспомнить, как создать и настроить баннер.',target:'[data-onboarding="help"]'},
-]
+].map(item=>({...item,title:onboardingTypography(item.title),text:onboardingTypography(item.text)}))
 const current=computed(()=>steps[step.value])
 const spotlight=ref<{left:number;top:number;width:number;height:number} | null>(null)
 const cardBody=ref<HTMLElement>()
@@ -96,7 +97,7 @@ defineExpose({start})
 .onboarding-overlay{position:fixed;inset:0;z-index:90;background:rgb(0 0 0 / .48)}
 .onboarding-overlay.has-target{background:transparent}
 .onboarding-spotlight{position:fixed;z-index:91;pointer-events:none;border-radius:14px;outline:2px solid #a875ff;box-shadow:0 0 0 9999px rgb(0 0 0 / .48)}
-.onboarding-card{position:fixed;z-index:92;right:24px;bottom:24px;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 32px);background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a;outline:none;font-family:var(--font-sans)}
+.onboarding-card{position:fixed;z-index:92;right:24px;bottom:24px;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 32px);background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a;outline:none;font-family:var(--font-sans)}
 .onboarding-welcome{right:50%;bottom:50%;transform:translate(50%,50%);width:min(420px,calc(100vw - 32px))}
 .onboarding-body{max-height:calc(100dvh - 64px);overflow-y:auto}
 .onboarding-arrow{position:absolute;width:14px;height:14px;background:var(--popover);border:1px solid var(--border);transform:translate(-50%,-50%) rotate(45deg);pointer-events:none}
@@ -109,9 +110,10 @@ defineExpose({start})
 .onboarding-progress{font-size:12px;color:var(--muted-foreground);margin:0;font-variant-numeric:tabular-nums}
 .onboarding-title{font-size:18px;line-height:1.35;letter-spacing:-.025em;font-weight:600;margin:0 0 8px}
 .onboarding-description{font-size:14px;line-height:1.5;color:var(--muted-foreground);margin:0}
+.onboarding-title,.onboarding-description{text-wrap:balance}
 .onboarding-dots{display:flex;gap:4px;margin:16px 0}
 .onboarding-dots span{height:3px;flex:1;border-radius:var(--radius);background:var(--muted)}
 .onboarding-dots span.active{background:var(--primary)}.onboarding-dots span.done{background:var(--muted-foreground)}
-.onboarding-actions{padding-top:16px;border-top:1px solid var(--border)}
+.onboarding-actions{padding-top:8px}
 @media(max-width:850px){.onboarding-card:not(.onboarding-welcome){right:16px;bottom:16px;padding:16px}}
 </style>

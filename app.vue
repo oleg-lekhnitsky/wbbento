@@ -235,7 +235,7 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
      <UiButton variant="outline" v-if="data.artwork" class="button quiet" @click="data.artwork=''">Удалить иллюстрацию</UiButton>
      <div v-if="preset!==5" class="city-field"><span>Метки</span><CityChips v-model="labelText" kind="label"/></div>
     </section>
-    <section v-if="selected==='image'">
+    <section v-if="selected==='image'" class="photo-settings">
 
      <div class="onboarding-photo-section" data-onboarding="photo-generation">
      <DriverPhotoPrompt v-model="data.imagePrompt" :ratio="format.ratio" :preset="preset"/>
