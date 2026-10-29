@@ -1,0 +1,50 @@
+import {chromium} from 'playwright'
+import assert from 'node:assert/strict'
+
+const url=process.env.STUDIO_URL || 'http://localhost:3000'
+const browser=await chromium.launch({headless:true})
+try{
+ const context=await browser.newContext({viewport:{width:1500,height:1050}})
+ const page=await context.newPage(),errors=[]
+ page.on('pageerror',error=>errors.push(error.message))
+ await page.goto(url,{waitUntil:'networkidle'})
+ const dialog=page.getByRole('dialog')
+ await dialog.getByRole('heading',{name:'Ваш первый баннер'}).waitFor()
+ await dialog.getByRole('button',{name:'Пропустить',exact:true}).click()
+ await dialog.waitFor({state:'hidden'})
+ let cookie=(await context.cookies()).find(c=>c.name==='wb-bento-onboarding-v1')
+ assert.ok(cookie?.value.includes('dismissed'))
+ assert.equal(cookie.sameSite,'Lax');assert.ok(cookie.expires>Date.now()/1000+300*86400)
+ await page.reload({waitUntil:'networkidle'})
+ assert.equal(await dialog.count(),0,'Dismissed walkthrough must not reopen')
+ await page.getByRole('button',{name:'Как создать баннер',exact:true}).click()
+ await dialog.getByRole('button',{name:'Показать',exact:true}).click()
+ await dialog.getByRole('heading',{name:'Выберите шаблон'}).waitFor()
+ await page.locator('.onboarding-spotlight').waitFor()
+ await dialog.getByRole('button',{name:'Назад',exact:true}).click()
+ await dialog.getByRole('heading',{name:'Ваш первый баннер'}).waitFor()
+ await dialog.getByRole('button',{name:'Показать',exact:true}).click()
+ for(const heading of ['Задайте формат','Пишите прямо на баннере','Или используйте панель','Добавьте свой логотип','Подберите фото','Создайте фото по образцу','Создайте с ChatGPT','Для работы в других редакторах','Скачайте готовый баннер','Подсказки всегда под рукой']){
+  await dialog.getByRole('button',{name:'Далее',exact:true}).click()
+  await dialog.getByRole('heading',{name:heading,exact:true}).waitFor()
+ }
+ await dialog.getByRole('button',{name:'Создать баннер',exact:true}).click()
+ await dialog.waitFor({state:'hidden'})
+ cookie=(await context.cookies()).find(c=>c.name==='wb-bento-onboarding-v1')
+ assert.ok(cookie?.value.includes('completed'))
+ await page.reload({waitUntil:'networkidle'});assert.equal(await dialog.count(),0)
+ await page.getByRole('button',{name:'Как создать баннер',exact:true}).click()
+ await dialog.waitFor();await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'})
+ await page.setViewportSize({width:390,height:844})
+ await page.getByRole('button',{name:'Как создать баннер',exact:true}).click()
+ await dialog.waitFor()
+ const box=await dialog.boundingBox()
+ assert.ok(box.x>=0&&box.x+box.width<=391&&box.y>=0&&box.y+box.height<=845,'Mobile card must fit viewport')
+ await page.screenshot({path:'/tmp/bento-onboarding-mobile.png'})
+ await dialog.getByRole('button',{name:'Показать',exact:true}).click()
+ await dialog.getByRole('heading',{name:'Выберите шаблон'}).waitFor()
+ await page.screenshot({path:'/tmp/bento-onboarding-mobile-step.png'})
+ assert.deepEqual(errors,[])
+ console.log('Onboarding: first visit, dismissal/completion cookies, replay, back/next, Escape and mobile bounds passed.')
+ await context.close()
+}finally{await browser.close()}

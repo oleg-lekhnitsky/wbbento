@@ -17,7 +17,7 @@ import { Separator as UiSeparator } from '~/components/ui/separator'
 import { ToggleGroup as UiToggleGroup, ToggleGroupItem as UiToggleGroupItem } from '~/components/ui/toggle-group'
 import { Slider as UiSlider } from '~/components/ui/slider'
 import { Switch as UiSwitch } from '~/components/ui/switch'
-import { Download, Save, Plus, Minus, Layers2, Settings2, Upload, Check, MousePointer2, LoaderCircle, Sparkles, ShieldCheck, Code2 } from '@lucide/vue'
+import { Download, Save, Plus, Minus, Layers2, Settings2, Upload, Check, MousePointer2, LoaderCircle, Sparkles, ShieldCheck, Code2, CircleHelp } from '@lucide/vue'
 import { toPng } from 'html-to-image'
 import {parseChatGptResult} from '~/lib/chatgpt-exchange.mjs'
 import { normalizeVehicleAsset, defaults, formats, presets, presetCopy, presetAssets, presetStyles, createProject, updateProject, validateProject, listLayouts, assetPlacementReset } from '~/lib/bento-project.mjs'
@@ -25,7 +25,8 @@ import { normalizeVehicleAsset, defaults, formats, presets, presetCopy, presetAs
 const templateGroups=[{name:'На весь кадр',indices:presets.map((_,i)=>i).filter(i=>i>=8)},{name:'Бенто',indices:presets.map((_,i)=>i).filter(i=>i<8)}]
 const compactWorkspace=useMediaQuery('(max-width: 850px)')
 const previewCanvas=ref<{fitText:()=>void}>()
-const data=reactive(structuredClone(defaults))
+const initialProject=createProject({layout:templateGroups[0].indices[0],format:0})
+const data=reactive(initialProject.data)
 const partnerCaptionLanguage=computed({get:()=>partnerLanguage(data.partnerCaption).value,set:(value:string)=>{data.partnerCaption=partnerCaption(value)}})
 watch(()=>data.partnerCaption,caption=>{const fixed=partnerLanguage(caption).caption;if(caption!==fixed)data.partnerCaption=fixed},{immediate:true,flush:'sync'})
 const labelText=computed({get:()=>data.benefitLabels ?? [data.benefitLabel1,data.benefitLabel2].filter(Boolean).join('\n'),set:(value:string)=>{data.benefitLabels=value}})
@@ -37,21 +38,22 @@ watch(()=>[data.heading,data.description,data.benefit,data.partner,data.city,dat
 },{immediate:true})
 const selectedBlockName=computed(()=>({headline:'Заголовок',benefit:'Преимущество',image:'Фото',vehicle:'Автомобиль',partner:'Официальный партнёр',contacts:'Контакты',format:'Формат'}[selected.value] || ''))
 function setBlockStyle(style:string){if(!['headline','benefit','image','vehicle','partner'].includes(selected.value))return;data.blockStyles={...data.blockStyles,[selected.value]:style}}
-const preset=ref(3), selected=ref('headline'), zoom=ref(75), exporting=ref(false), toast=ref(''), artboard=ref<HTMLElement>(), ready=ref(false)
+const preset=ref(initialProject.preset), selected=ref('headline'), zoom=ref(75), exporting=ref(false), toast=ref(''), artboard=ref<HTMLElement>(), ready=ref(false)
 
 const formatIndex=ref(0),format=computed(()=>formats[formatIndex.value])
 const isDevelopment=import.meta.dev
 const templateDefaults=templateDefaultsFromFramings(framingPresets,presetAssets)
 const savedPresetStyles=ref<Record<string,Record<string,string>>>(templateDefaults.styles)
 const savedPresetPhotos=ref<Record<string,string>>(templateDefaults.photos)
+const draftPresetPhotos=ref<Record<string,string>>({})
 const framingDrafts=ref<Record<string,any>>({}),savedFramings=ref<Record<string,any>>(structuredClone(framingPresets))
-function rememberFraming(){if(ready.value){const scope=framingScope(preset.value,format.value);framingDrafts.value[scope]=captureFraming(data,scope)}}
-function restoreFraming(){const scope=framingScope(preset.value,format.value);applyTemplateFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope],savedPresetPhotos.value[preset.value],savedPresetStyles.value[preset.value])}
+function rememberFraming(){if(ready.value){const scope=framingScope(preset.value,format.value);framingDrafts.value[scope]=captureFraming(data,scope);draftPresetPhotos.value[preset.value]=data.image}}
+function restoreFraming(){const scope=framingScope(preset.value,format.value);applyTemplateFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope],draftPresetPhotos.value[preset.value] ?? savedPresetPhotos.value[preset.value],savedPresetStyles.value[preset.value])}
 function templatePreview(index:number){
  if(index===preset.value)return data
  const preview=createProject({layout:index,format:formatIndex.value}).data
  const scope=framingScope(index,format.value)
- applyTemplateFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope],savedPresetPhotos.value[index],savedPresetStyles.value[index])
+ applyTemplateFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope],draftPresetPhotos.value[index] ?? savedPresetPhotos.value[index],savedPresetStyles.value[index])
  return preview
 }
 function changeFormat(index:number){
@@ -68,7 +70,7 @@ function changeFormat(index:number){
 function saveAllFramingDefaults(){
  if(!isDevelopment)return
  rememberFraming()
- try{const all={...savedFramings.value,...framingDrafts.value};const photos={...savedPresetPhotos.value,[preset.value]:data.image};const styles={...savedPresetStyles.value,[preset.value]:{...data.blockStyles}};localStorage.setItem('wb-bento-preset-styles',JSON.stringify(styles));localStorage.setItem('wb-bento-preset-photos',JSON.stringify(photos));localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedPresetStyles.value=styles;savedPresetPhotos.value=photos;savedFramings.value=JSON.parse(JSON.stringify(all));notify('Фото и цвета блоков назначены шаблону; кадрирование сохранено по форматам')}
+ try{const all={...savedFramings.value,...framingDrafts.value};const photos={...savedPresetPhotos.value,...draftPresetPhotos.value,[preset.value]:data.image};const styles={...savedPresetStyles.value,[preset.value]:{...data.blockStyles}};localStorage.setItem('wb-bento-preset-styles',JSON.stringify(styles));localStorage.setItem('wb-bento-preset-photos',JSON.stringify(photos));localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedPresetStyles.value=styles;savedPresetPhotos.value=photos;savedFramings.value=JSON.parse(JSON.stringify(all));notify('Фото и цвета блоков назначены шаблону; кадрирование сохранено по форматам')}
  catch(error){notify(error instanceof DOMException && error.name==='QuotaExceededError'?'Не удалось сохранить: недостаточно места. Экспортируйте настройки кадрирования в JSON.':'Не удалось сохранить настройки кадрирования. Экспортируйте их в JSON.')}
 }
 function exportFramingDefaults(){
@@ -76,7 +78,7 @@ function exportFramingDefaults(){
  rememberFraming();const all={...savedFramings.value,...framingDrafts.value}
  for(let index=0;index<presets.length;index++)for(let fi=0;fi<formats.length;fi++){
   const scope=framingScope(index,formats[fi]),preview=createProject({layout:index,format:fi}).data
-  const photo=index===preset.value?data.image:savedPresetPhotos.value[index]
+  const photo=index===preset.value?data.image:draftPresetPhotos.value[index] ?? savedPresetPhotos.value[index]
   const styles=index===preset.value?data.blockStyles:savedPresetStyles.value[index]
   applyTemplateFraming(preview,scope,all[scope],photo,styles);all[scope]=captureFraming(preview,scope)
  }
@@ -160,7 +162,7 @@ function pasteImage(event:ClipboardEvent){
 onMounted(()=>document.addEventListener('paste',pasteImage))
 onBeforeUnmount(()=>document.removeEventListener('paste',pasteImage))
 function save(){if(isDevelopment)saveAllFramingDefaults();try{localStorage.setItem('wb-bento',JSON.stringify({data,preset:preset.value,format:formatIndex.value}));notify('Проект сохранён на этом устройстве')}catch{notify('Хранилище заполнено. Попробуйте изображение меньшего размера.')}}
-onMounted(()=>{try{const saved=JSON.parse(localStorage.getItem('wb-bento')||'null');if(saved){Object.assign(data,saved.data);data.vehicleImage=normalizeVehicleAsset(data.vehicleImage);const assets=presetAssets[saved.preset] || presetAssets[3];if(!data.image || data.image.startsWith('https://images.unsplash.com/'))data.image=assets.image;if(!data.artwork)data.artwork=assets.artwork;if(!data.vehicleImage)data.vehicleImage=assets.vehicleImage;if(saved.data.photoZoom===undefined && data.image===assets.image){data.position=assets.position;data.positionY=assets.positionY;data.photoZoom=assets.photoZoom;}data.wbLogo='/wb-taxi.svg';if(['#7015ff','#5421d6','#242424'].includes(data.accent.toLowerCase()))data.accent='#661AFF';preset.value=Number.isInteger(saved.preset) && saved.preset>=0 && saved.preset<presets.length?saved.preset:3;if(!saved.data.blockStyles || Object.keys(saved.data.blockStyles).length===0)data.blockStyles=presetStyles(preset.value);if(preset.value===7 && data.benefit==='аренда авто от 150000 сом/день')data.benefit='аренда авто\nот 150000\nсом/день';formatIndex.value=saved.format}}catch{}restoreFraming();ready.value=true})
+onMounted(()=>{try{const saved=JSON.parse(localStorage.getItem('wb-bento')||'null');if(saved){Object.assign(data,saved.data);data.vehicleImage=normalizeVehicleAsset(data.vehicleImage);const assets=presetAssets[saved.preset] || presetAssets[initialProject.preset];if(!data.image || data.image.startsWith('https://images.unsplash.com/'))data.image=assets.image;if(!data.artwork)data.artwork=assets.artwork;if(!data.vehicleImage)data.vehicleImage=assets.vehicleImage;if(saved.data.photoZoom===undefined && data.image===assets.image){data.position=assets.position;data.positionY=assets.positionY;data.photoZoom=assets.photoZoom;}data.wbLogo='/wb-taxi.svg';if(['#7015ff','#5421d6','#242424'].includes(data.accent.toLowerCase()))data.accent='#661AFF';preset.value=Number.isInteger(saved.preset) && saved.preset>=0 && saved.preset<presets.length?saved.preset:initialProject.preset;if(!saved.data.blockStyles || Object.keys(saved.data.blockStyles).length===0)data.blockStyles=presetStyles(preset.value);if(preset.value===7 && data.benefit==='аренда авто от 150000 сом/день')data.benefit='аренда авто\nот 150000\nсом/день';formatIndex.value=saved.format}}catch{}restoreFraming();ready.value=true})
 async function renderProjectPng(){
  if(!artboard.value)throw new Error('Баннер ещё не готов')
  const previousSelection=selected.value;selected.value=''
@@ -186,6 +188,7 @@ async function openProject(project:any){
  await nextTick();previewCanvas.value?.fitText()
  return currentProject()
 }
+const onboarding=ref<{start:()=>void}>()
 const chatgptFlow=ref<{open:()=>void}>()
 const exchangeProject=computed(()=>currentProject())
 function openChatGptFlow(){chatgptFlow.value?.open()}
@@ -199,21 +202,22 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
 </script>
 <template>
 <div class="studio-shell">
+ <StudioOnboarding ref="onboarding" @select-block="selectBlock"/>
  <header class="topbar">
   <div class="brand-home"><a class="wordmark" href="#" aria-label="WB Taxi Bento"><img class="header-logo" src="/wb-taxi-header.svg" alt="WB Taxi"/></a></div>
-  <div class="header-actions"><UiButton v-if="isDevelopment" variant="outline" size="sm" @click="saveAllFramingDefaults"><Save class="size-4"/>Сохранить настройки шаблона</UiButton><UiButton v-if="isDevelopment" variant="ghost" size="icon-sm" @click="exportFramingDefaults" aria-label="Экспорт настроек кадрирования" title="Экспорт настроек кадрирования"><Download class="size-4"/></UiButton><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
+  <div class="header-actions"><UiButton variant="ghost" size="icon-sm" data-onboarding="help" aria-label="Как создать баннер" title="Как создать баннер" @click="onboarding?.start()"><CircleHelp class="size-4"/></UiButton><UiButton v-if="isDevelopment" variant="outline" size="sm" @click="saveAllFramingDefaults"><Save class="size-4"/>Сохранить настройки шаблона</UiButton><UiButton v-if="isDevelopment" variant="ghost" size="icon-sm" @click="exportFramingDefaults" aria-label="Экспорт настроек кадрирования" title="Экспорт настроек кадрирования"><Download class="size-4"/></UiButton><UiButton variant="ghost" size="sm" @click="openChatGptFlow"><Sparkles class="size-4"/>ChatGPT</UiButton><UiButton variant="outline" size="sm" @click="save"><Save class="size-4"/>Сохранить проект</UiButton><UiButton size="sm" data-onboarding="export" @click="download" :disabled="exporting"><LoaderCircle v-if="exporting" class="size-4 animate-spin"/><Download v-else class="size-4"/><span>{{exporting?'Экспорт…':'Экспорт PNG'}}</span></UiButton></div>
  </header>
  <ResizablePanelGroup direction="horizontal" class="workspace">
   <ResizablePanel :default-size="19" :min-size="15" :max-size="30" class="workspace-panel library-panel">
-  <aside class="library"><div class="panel-heading"><span><Layers2 class="size-4"/>Шаблоны</span></div><div class="panel-tabs">
+  <aside class="library" data-onboarding="templates"><div class="panel-heading"><span><Layers2 class="size-4"/>Шаблоны</span></div><div class="panel-tabs">
    <div class="library-content"><section v-for="group in templateGroups" :key="group.name" class="template-group" :aria-label="group.name"><h2 class="template-group-title">{{group.name}}</h2><div class="preset-grid"><UiButton variant="ghost" v-for="i in group.indices" :key="i" :aria-label="uiName(presets[i])" class="preset-card" :class="{active:preset===i}" @click="choosePreset(i)"><div class="preset-preview"><BentoCanvas :data="templatePreview(i)" :preset="i" :format="format" miniature/></div><span>{{uiName(presets[i])}}</span><small v-if="preset===i" aria-label="Выбранный шаблон"><Check class="size-3"/></small></UiButton></div></section></div>
    </div>
   </aside></ResizablePanel><ResizableHandle :disabled="compactWorkspace" class="workspace-handle" aria-label="Изменить ширину панели шаблонов"/><ResizablePanel :default-size="56" :min-size="30" class="workspace-panel canvas-panel">
   <main class="canvas-area" @pointerdown="clearCanvasSelection"><div class="canvas-toolbar"><UiBadge variant="outline" class="format-tag">{{format.w}} × {{format.h}} пикс.</UiBadge></div><div class="canvas-scroll"><div class="artboard-wrap" :style="{width:(formatIndex===2?330:format.w/format.h>1.5?700:560)*zoom/75+'px'}"><div ref="artboard" class="artboard"><BentoCanvas ref="previewCanvas" :data="data" :preset="preset" :format="format" :selected="selected" @select="selectBlock($event)" @photo-position="data.position=$event.x;data.positionY=$event.y" @copy-update="updateCopy($event)" @element-transform="updateElement($event)"/></div><div v-if="formatIndex===2 && showSafeGuides" class="story-guides" aria-hidden="true" :style="{aspectRatio:format.w+'/'+format.h}"><div class="story-guide-top" :style="{height:data.storySafeTop/format.h*100+'%'}"><span>Верхняя зона интерфейса · {{data.storySafeTop}} пикс.</span></div><div class="story-guide-bottom" :style="{height:data.storySafeBottom/format.h*100+'%'}"><span>Нижняя зона интерфейса · {{data.storySafeBottom}} пикс.</span></div></div><div class="below-canvas"><span><MousePointer2 class="size-3"/>Нажмите на блок, чтобы редактировать</span><span>{{format.ratio}}</span></div></div></div><div class="canvas-bottom"><span class="canvas-hint">Перетащите фото, чтобы настроить кадрирование</span><div class="zoom-control"><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.max(35,zoom-10)" aria-label="Уменьшить"><Minus class="size-4"/></UiButton><span>{{zoom}}%</span><UiButton variant="ghost" size="icon-sm" @click="zoom=Math.min(115,zoom+10)" aria-label="Увеличить"><Plus class="size-4"/></UiButton></div></div></main></ResizablePanel><ResizableHandle :disabled="compactWorkspace" class="workspace-handle" aria-label="Изменить ширину панели настроек"/><ResizablePanel :default-size="25" :min-size="20" :max-size="38" class="workspace-panel inspector-panel">
   <ChatGptExchange ref="chatgptFlow" :project="exchangeProject" @apply="openProject"/>
   <AssetsPanel/>
-  <FormatPanel :format="formatIndex" @update:format="changeFormat" v-model:safe-top="data.storySafeTop" v-model:safe-bottom="data.storySafeBottom" v-model:guides="showSafeGuides"/>
-  <aside class="inspector"><div class="panel-heading"><span><Settings2 class="size-4"/>Настройки</span></div><div class="panel-tabs"><div class="inspector-content">
+  <FormatPanel data-onboarding="format" :format="formatIndex" @update:format="changeFormat" v-model:safe-top="data.storySafeTop" v-model:safe-bottom="data.storySafeBottom" v-model:guides="showSafeGuides"/>
+  <aside class="inspector" data-onboarding="settings"><div class="panel-heading"><span><Settings2 class="size-4"/>Настройки</span></div><div class="panel-tabs"><div class="inspector-content">
     <div class="block-picker"><UiButton variant="ghost" size="xs" v-for="block in visibleBlocks" :key="block.key" :class="{active:selected===block.key}" @click="selectBlock(block.key)">{{block.name}}</UiButton></div>
     <div v-if="selected && selected!=='headline'" class="inspector-heading"><h2>{{selectedBlockName}}</h2></div>
     <p v-if="!selected" class="muted">Выберите блок на баннере или в списке выше</p>
@@ -233,12 +237,16 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
     </section>
     <section v-if="selected==='image'">
 
+     <div class="onboarding-photo-section" data-onboarding="photo-generation">
      <DriverPhotoPrompt v-model="data.imagePrompt" :ratio="format.ratio" :preset="preset"/>
      <CarPhotoPrompt v-model="data.carPrompt" :ratio="format.ratio" :preset="preset"/>
+     </div>
+     <div class="onboarding-photo-section" data-onboarding="photos">
      <UiCollapsible class="driver-prompt ready-car-photos"><UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Images class="size-4"/><span>Готовые фото водителя</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content"><div class="prompt-options ready-car-grid" role="group" aria-label="Готовые фото водителя"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="data.image===readyDriverPhoto(style.id)" @click="chooseReadyDriverPhoto(style.id)"><img :src="readyDriverPhoto(style.id)" alt="" loading="lazy"/><span>{{uiName(style.id)}}</span><Check v-if="data.image===readyDriverPhoto(style.id)" class="ready-car-check size-4"/></UiButton></div></UiCollapsibleContent></UiCollapsible>
      <UiCollapsible class="driver-prompt ready-car-photos"><UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Images class="size-4"/><span>Готовые фото автомобиля</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content"><label>Ракурс<StudioSelect label="Ракурс готовых фото автомобиля" v-model="readyCarAngle" :options="[{value:'front-left',label:'Спереди слева'},{value:'side-left',label:'Левый бок'}]"/></label><div class="prompt-options ready-car-grid" role="group" aria-label="Готовые фото автомобиля"><UiButton v-for="scene in carStreets" :key="scene.id" variant="ghost" :aria-pressed="data.image===readyCarPhoto(scene.id)" @click="chooseReadyCarPhoto(scene.id)"><img :src="readyCarPhoto(scene.id)" alt="" loading="lazy"/><span>{{uiName(scene.id)}}</span><Check v-if="data.image===readyCarPhoto(scene.id)" class="ready-car-check size-4"/></UiButton></div></UiCollapsibleContent></UiCollapsible>
      <label class="photo-upload"><img :src="data.image"/><span><Upload class="size-4"/>Заменить фото</span><input type="file" accept="image/*" @change="upload($event,'image')"/></label>
 
+     </div>
      <UiButton class="reset-photo-crop" variant="outline" @click="resetPhotoCrop">Сбросить кадрирование</UiButton>
      <div class="city-field" v-if="preset!==5 && preset<8"><span>Города</span><CityChips v-model="data.city"/></div>
     </section>
@@ -252,7 +260,7 @@ onBeforeUnmount(()=>{delete (window as any).wbBento})
     <section v-if="selected==='partner' || (selected==='image' && preset===5)">
      <label>Язык подписи партнёра<StudioSelect v-model="partnerCaptionLanguage" label="Язык подписи партнёра" :options="partnerLanguages"/></label>
     </section>
-    <section v-if="selected==='headline' || selected==='partner' || (selected==='image' && preset===5)">
+    <section v-if="selected==='headline' || selected==='partner' || (selected==='image' && preset===5)" data-onboarding="partner-logo">
      <label>Название партнёра<UiInput v-model="data.partner"/></label>
      <label class="upload-box"><Upload class="size-5"/><img v-if="data.logo" class="asset-thumbnail" :src="data.logo" alt="Логотип партнёра"/><strong>{{data.logo?'Заменить логотип партнёра':'Загрузить логотип партнёра'}}</strong><small>SVG, PNG или WebP</small><input type="file" accept="image/svg+xml,image/png,image/webp" @change="upload($event,'logo')"/></label>
      <UiButton variant="outline" v-if="data.logo" class="button quiet" @click="data.logo=''">Использовать название партнёра</UiButton>

@@ -106,7 +106,7 @@ function keep(slot:string){delete uploads.value[slot];kept.value=[...new Set([..
 function apply(){try{const project=applyChatGptImages(pending.value,uploads.value,kept.value);emit('apply',project);pending.value=undefined;uploads.value={};kept.value=[];status.value='Результат применён. Отредактируйте баннер, сохраните проект или экспортируйте PNG.'}catch(error){status.value=uiError(error)}}
 </script>
 <template>
- <Collapsible v-model:open="opened" class="driver-prompt chatgpt-exchange">
+ <Collapsible v-model:open="opened" class="driver-prompt chatgpt-exchange" data-onboarding="chatgpt">
   <CollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Sparkles class="size-4"/><span>Создать с ChatGPT</span><ChevronDown class="prompt-chevron size-4"/></UiButton></CollapsibleTrigger>
   <CollapsibleContent ref="flowContent" class="prompt-content">
    <nav class="exchange-steps" aria-label="Шаги создания"><UiButton v-for="(name,index) in steps" :key="name" variant="ghost" size="sm" :aria-current="step===index+1?'step':undefined" :aria-controls="'generation-step-'+(index+1)" @click="goStep(index+1)"><span>{{index+1}}</span>{{name}}</UiButton></nav>

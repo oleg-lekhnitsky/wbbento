@@ -32,7 +32,7 @@ async function download(){
 </script>
 <template>
  <Collapsible class="driver-prompt assets-panel">
-  <CollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><FolderDown class="size-4"/><span>Материалы</span><ChevronDown class="prompt-chevron size-4"/></UiButton></CollapsibleTrigger>
+  <CollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger" data-onboarding="materials"><FolderDown class="size-4"/><span>Материалы</span><ChevronDown class="prompt-chevron size-4"/></UiButton></CollapsibleTrigger>
   <CollapsibleContent class="prompt-content">
    <a class="asset-download-action" href="https://www.figma.com/design/eImUSGdbtXvYhWAiXccZuw?node-id=27-122" target="_blank" rel="noopener noreferrer"><ExternalLink class="size-4"/><span>Материалы в Figma</span><small>Figma ↗</small></a>
    <a class="asset-download-action" href="/downloads/wb-bento-fonts.zip" download><Download class="size-4"/><span>Скачать шрифты</span><small>ZIP</small></a>
