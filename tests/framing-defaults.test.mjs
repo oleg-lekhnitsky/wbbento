@@ -36,3 +36,17 @@ test('a replacement saved in widescreen also becomes the template photo',()=>{
  const {photos}=templateDefaultsFromFramings({'0:1080x1080':{image:'/assets/old.png'},'0:1920x1080':{image:'/assets/new.png'}},[{image:'/assets/old.png'}])
  assert.equal(photos[0],'/assets/new.png')
 })
+
+
+test('downloaded template copy round trips NBSP, line breaks and empty text across formats',async()=>{
+ const {captureTemplateCopy}=await import('../lib/framing-defaults.mjs')
+ const data=createProject({layout:0}).data
+ Object.assign(data,{heading:'работайте по\u00a0своему графику',description:'',benefit:'строка 1\nстрока 2',benefitLabel1:'физ\u00a0лица'})
+ const exported=JSON.parse(JSON.stringify({'0:1080x1080':{...captureFraming(data,'0:1080x1080'),copy:captureTemplateCopy(data)}}))
+ const {copies}=templateDefaultsFromFramings(exported,[{image:data.image}])
+ assert.equal(copies[0].heading,data.heading)
+ assert.equal(copies[0].description,'')
+ assert.equal(copies[0].benefit,data.benefit)
+ assert.equal(copies[0].benefitLabel1,data.benefitLabel1)
+ assert.deepEqual(templateDefaultsFromFramings({'0:1080x1080':{image:data.image}},[{image:data.image}]).copies,{})
+})

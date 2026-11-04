@@ -962,7 +962,8 @@
   overflow: hidden;
 }
 .reference-creative .pills > span > .chip-text,
-.reference-creative .city > .chip-text {
+.reference-creative .city > .chip-text,
+.reference-creative .headline-city > .chip-text {
   display: block;
   height: auto;
   padding: 0;
@@ -970,7 +971,7 @@
   background: none;
   color: inherit;
   font: inherit;
-  line-height: .8;
+  line-height: inherit;
   white-space: inherit;
 }
 .reference-creative .photograph.selected {

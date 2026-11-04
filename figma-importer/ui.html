@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}body{margin:0;padding:20px;font:12px/1.5 Inter,system-ui,sans-serif;background:var(--figma-color-bg,#fff);color:var(--figma-color-text,#171717)}h1{font-size:16px;line-height:1.3;margin:0 0 8px}p{margin:0 0 16px;color:var(--figma-color-text-secondary,#666)}button{font:inherit;border:1px solid var(--figma-color-border,#ddd);border-radius:8px;padding:9px 12px;background:var(--figma-color-bg,#fff);color:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible{outline:2px solid var(--figma-color-border-brand,#661aff);outline-offset:2px}#choose{width:100%;border-style:dashed;padding:20px}#choose.drag{border-color:#661aff;background:#661aff12}#preview{display:none;max-width:100%;max-height:160px;margin:14px auto;border:1px solid var(--figma-color-border,#ddd);border-radius:6px}#summary{margin:12px 0;overflow-wrap:anywhere}label{display:flex;align-items:flex-start;gap:8px;margin:12px 0}input[type=checkbox]{margin-top:3px}footer{display:flex;gap:8px;margin-top:20px}#import{flex:1;background:var(--figma-color-bg-brand,#171717);color:var(--figma-color-text-onbrand,#fff);border-color:transparent}#status{white-space:pre-wrap;margin-top:16px;overflow-wrap:anywhere}#status.error{color:var(--figma-color-text-danger,#c21e32)}#warnings{margin:8px 0;padding-left:20px;color:var(--figma-color-text-secondary,#666)}small{display:block;color:var(--figma-color-text-secondary,#666)}
+</style>
+<h1>Import a slide into Figma</h1>
+<p>Choose a <strong>.figma.json</strong> export. Text stays editable; the slide is added to the current page.</p>
+<button id="choose">Choose JSON or drop it here</button>
+<input id="file" type="file" accept=".json,application/json" hidden>
+<div id="summary" aria-live="polite">No file selected.</div>
+<img id="preview" alt="Exported slide preview">
+<label><input id="merge" type="checkbox" checked><span>Keep adjacent text fragments together<small>Combines word spans with matching typography into one editable layer.</small></span></label>
+<label><input id="reference" type="checkbox"><span>Add a separate reference PNG<small>Places the exported preview beside the editable frame for comparison.</small></span></label>
+<small>Original fonts must be available in Figma. Substitutions and unsupported variable-font axes are reported after import. Animation is not imported.</small>
+<footer><button id="close">Close</button><button id="import" disabled>Import editable slide</button></footer>
+<div id="status" role="status" aria-live="polite"></div><ul id="warnings"></ul>
+<script>
+const $=id=>document.getElementById(id)
+let documentData=null,busy=false
+function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error)}
+async function read(file){
+ if(busy||!file)return
+ documentData=null;$('import').disabled=true;$('preview').style.display='none';$('preview').removeAttribute('src');$('warnings').replaceChildren();status('')
+ try{
+  if(file.size>50*1024*1024)throw Error('Choose a JSON file smaller than 50 MB.')
+  const data=JSON.parse(await file.text())
+  if(data.version!==1||!Array.isArray(data.panels)||!Number.isFinite(data.width)||!Number.isFinite(data.height))throw Error('This is not a supported .figma.json slide export.')
+  const count=data.panels.reduce((sum,panel)=>sum+(Array.isArray(panel.layers)?panel.layers.length:0),0)
+  $('summary').textContent=`${file.name}\n${data.width} × ${data.height} · ${data.panels.length} panels · ${count} source layers`
+  if(typeof data.referencePng==='string'&&/^data:image\/png;base64,[A-Za-z0-9+/=\s]+$/.test(data.referencePng)){$('preview').src=data.referencePng;$('preview').style.display='block'}
+  documentData=data;$('import').disabled=false
+ }catch(error){$('summary').textContent='No valid file selected.';status(error.message,true)}
+}
+$('choose').onclick=()=>$('file').click()
+$('file').onchange=event=>read(event.target.files[0])
+$('choose').ondragover=event=>{event.preventDefault();$('choose').classList.add('drag')}
+$('choose').ondragleave=()=>$('choose').classList.remove('drag')
+$('choose').ondrop=event=>{event.preventDefault();$('choose').classList.remove('drag');read(event.dataTransfer.files[0])}
+$('close').onclick=()=>parent.postMessage({pluginMessage:{type:'close'}},'*')
+$('import').onclick=()=>{
+ if(!documentData||busy)return
+ busy=true;$('import').disabled=true;$('choose').disabled=true;$('file').disabled=true;$('warnings').replaceChildren();status('Importing layers and loading fonts…')
+ parent.postMessage({pluginMessage:{type:'import',document:documentData,options:{mergeText:$('merge').checked,reference:$('reference').checked}}},'*')
+}
+window.onmessage=event=>{
+ if(event.source!==parent)return
+ const message=event.data.pluginMessage
+ if(!message||!['error','success'].includes(message.type))return
+ busy=false;$('import').disabled=!documentData;$('choose').disabled=false;$('file').disabled=false
+ if(message.type==='error')status(message.message,true)
+ else{const result=message.result;status(`Imported ${result.name}: ${result.panels} panels, ${result.textCount} editable text layers, ${result.imageCount} images.`);for(const warning of result.warnings){const li=document.createElement('li');li.textContent=warning;$('warnings').appendChild(li)}}
+}
+</script>
+</html>

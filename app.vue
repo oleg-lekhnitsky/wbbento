@@ -2,7 +2,7 @@
 import { Collapsible as UiCollapsible, CollapsibleTrigger as UiCollapsibleTrigger, CollapsibleContent as UiCollapsibleContent } from '~/components/ui/collapsible'
 import { ChevronDown, Images } from '@lucide/vue'
 import {carStreets,driverPhotoStyles} from '~/lib/image-prompts.mjs'
-import {framingScope,captureFraming,applyFraming,applyTemplateFraming,templateDefaultsFromFramings} from '~/lib/framing-defaults.mjs'
+import {framingScope,captureFraming,applyFraming,applyTemplateFraming,templateDefaultsFromFramings,captureTemplateCopy} from '~/lib/framing-defaults.mjs'
 import framingPresets from '~/lib/framing-presets.json'
 import {uiName} from '~/lib/ui-ru.mjs'
 import {partnerLanguages,partnerLanguage,partnerCaption} from '~/lib/partner-languages.mjs'
@@ -43,15 +43,23 @@ const preset=ref(initialProject.preset), selected=ref('headline'), zoom=ref(75),
 const formatIndex=ref(0),format=computed(()=>formats[formatIndex.value])
 const isDevelopment=import.meta.dev
 const templateDefaults=templateDefaultsFromFramings(framingPresets,presetAssets)
+// Browser tuning belongs to the bundled defaults it was created from.
+const framingDefaultsRevision=Array.from(JSON.stringify(framingPresets)).reduce((hash,char)=>Math.imul(hash^char.charCodeAt(0),16777619)>>>0,2166136261).toString(16)
+
 const savedPresetStyles=ref<Record<string,Record<string,string>>>(templateDefaults.styles)
 const savedPresetPhotos=ref<Record<string,string>>(templateDefaults.photos)
 const draftPresetPhotos=ref<Record<string,string>>({})
+const templateCopyDrafts=ref<Record<number,any>>(structuredClone(templateDefaults.copies))
+Object.assign(data,templateCopyDrafts.value[initialProject.preset] || {})
+function rememberTemplateCopy(){templateCopyDrafts.value[preset.value]=captureTemplateCopy(data)}
+
 const framingDrafts=ref<Record<string,any>>({}),savedFramings=ref<Record<string,any>>(structuredClone(framingPresets))
 function rememberFraming(){if(ready.value){const scope=framingScope(preset.value,format.value);framingDrafts.value[scope]=captureFraming(data,scope);draftPresetPhotos.value[preset.value]=data.image}}
 function restoreFraming(){const scope=framingScope(preset.value,format.value);applyTemplateFraming(data,scope,framingDrafts.value[scope] || savedFramings.value[scope],draftPresetPhotos.value[preset.value] ?? savedPresetPhotos.value[preset.value],savedPresetStyles.value[preset.value])}
 function templatePreview(index:number){
  if(index===preset.value)return data
  const preview=createProject({layout:index,format:formatIndex.value}).data
+ Object.assign(preview,templateCopyDrafts.value[index] || {})
  const scope=framingScope(index,format.value)
  applyTemplateFraming(preview,scope,framingDrafts.value[scope] || savedFramings.value[scope],draftPresetPhotos.value[index] ?? savedPresetPhotos.value[index],savedPresetStyles.value[index])
  return preview
@@ -69,23 +77,23 @@ function changeFormat(index:number){
 }
 function saveAllFramingDefaults(){
  if(!isDevelopment)return
- rememberFraming()
- try{const all={...savedFramings.value,...framingDrafts.value};const photos={...savedPresetPhotos.value,...draftPresetPhotos.value,[preset.value]:data.image};const styles={...savedPresetStyles.value,[preset.value]:{...data.blockStyles}};localStorage.setItem('wb-bento-preset-styles',JSON.stringify(styles));localStorage.setItem('wb-bento-preset-photos',JSON.stringify(photos));localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));savedPresetStyles.value=styles;savedPresetPhotos.value=photos;savedFramings.value=JSON.parse(JSON.stringify(all));notify('Фото и цвета блоков назначены шаблону; кадрирование сохранено по форматам')}
+ rememberTemplateCopy();rememberFraming()
+ try{const all={...savedFramings.value,...framingDrafts.value};const photos={...savedPresetPhotos.value,...draftPresetPhotos.value,[preset.value]:data.image};const styles={...savedPresetStyles.value,[preset.value]:{...data.blockStyles}};localStorage.setItem('wb-bento-preset-copy',JSON.stringify(templateCopyDrafts.value));localStorage.setItem('wb-bento-preset-styles',JSON.stringify(styles));localStorage.setItem('wb-bento-preset-photos',JSON.stringify(photos));localStorage.setItem('wb-bento-framing-defaults',JSON.stringify(all));localStorage.setItem('wb-bento-framing-revision',framingDefaultsRevision);savedPresetStyles.value=styles;savedPresetPhotos.value=photos;savedFramings.value=JSON.parse(JSON.stringify(all));notify('Фото и цвета блоков назначены шаблону; кадрирование сохранено по форматам')}
  catch(error){notify(error instanceof DOMException && error.name==='QuotaExceededError'?'Не удалось сохранить: недостаточно места. Экспортируйте настройки кадрирования в JSON.':'Не удалось сохранить настройки кадрирования. Экспортируйте их в JSON.')}
 }
 function exportFramingDefaults(){
  if(!isDevelopment)return
- rememberFraming();const all={...savedFramings.value,...framingDrafts.value}
+ rememberTemplateCopy();rememberFraming();const all={...savedFramings.value,...framingDrafts.value}
  for(let index=0;index<presets.length;index++)for(let fi=0;fi<formats.length;fi++){
   const scope=framingScope(index,formats[fi]),preview=createProject({layout:index,format:fi}).data
   const photo=index===preset.value?data.image:draftPresetPhotos.value[index] ?? savedPresetPhotos.value[index]
   const styles=index===preset.value?data.blockStyles:savedPresetStyles.value[index]
-  applyTemplateFraming(preview,scope,all[scope],photo,styles);all[scope]=captureFraming(preview,scope)
+  applyTemplateFraming(preview,scope,all[scope],photo,styles);all[scope]={...captureFraming(preview,scope),copy:captureTemplateCopy(templateCopyDrafts.value[index] ?? preview)}
  }
  const content=JSON.stringify(all,null,2)
  const url=URL.createObjectURL(new Blob([content],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='framing-defaults.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
 }
-onMounted(()=>{if(!isDevelopment)return;try{savedPresetStyles.value={...templateDefaults.styles,...JSON.parse(localStorage.getItem('wb-bento-preset-styles') || '{}')};savedPresetPhotos.value={...templateDefaults.photos,...JSON.parse(localStorage.getItem('wb-bento-preset-photos') || '{}')};savedFramings.value={...structuredClone(framingPresets),...JSON.parse(localStorage.getItem('wb-bento-framing-defaults') || '{}')};for(const index of [11,12]){const previous=index===11?'/assets/driver-scenes/uzbek-35-low-angle.png':'/assets/car-scenes/concrete-wall-front-left-v5.png';if(savedPresetPhotos.value[index]===previous)savedPresetPhotos.value[index]=templateDefaults.photos[index]}restoreFraming()}catch{}})
+onMounted(()=>{if(!isDevelopment)return;try{if(localStorage.getItem('wb-bento-framing-revision')!==framingDefaultsRevision)return;templateCopyDrafts.value={...structuredClone(templateDefaults.copies),...JSON.parse(localStorage.getItem('wb-bento-preset-copy') || '{}')};Object.assign(data,templateCopyDrafts.value[preset.value] || {});savedPresetStyles.value={...templateDefaults.styles,...JSON.parse(localStorage.getItem('wb-bento-preset-styles') || '{}')};savedPresetPhotos.value={...templateDefaults.photos,...JSON.parse(localStorage.getItem('wb-bento-preset-photos') || '{}')};savedFramings.value={...structuredClone(framingPresets),...JSON.parse(localStorage.getItem('wb-bento-framing-defaults') || '{}')};for(const index of [11,12]){const previous=index===11?'/assets/driver-scenes/uzbek-35-low-angle.png':'/assets/car-scenes/concrete-wall-front-left-v5.png';if(savedPresetPhotos.value[index]===previous)savedPresetPhotos.value[index]=templateDefaults.photos[index]}restoreFraming()}catch{}})
 const showSafeGuides=ref(true)
 const settingsTab=ref('Block')
 const visibleBlocks=computed(()=>{
@@ -112,7 +120,7 @@ watch(visibleBlocks,blocks=>{if(selected.value && !blocks.some(block=>block.key=
 
 function applyPresetAssets(index:number){Object.assign(data,presetAssets[index],{vehicleScale:200,vehiclePosition:190})}
 
-function choosePreset(index:number){if(index===preset.value)return;rememberFraming();preset.value=index;applyPresetAssets(index);data.blockStyles=presetStyles(index);data.benefitLabels=undefined;data.benefitLabel1=index===1?'комфорт':'физ лица';data.benefitLabel2=index===1?'электро':'ип';[data.heading,data.description,data.benefit]=presetCopy[index];restoreFraming()}
+function choosePreset(index:number){if(index===preset.value)return;rememberTemplateCopy();rememberFraming();preset.value=index;applyPresetAssets(index);data.blockStyles=presetStyles(index);data.benefitLabels=undefined;data.benefitLabel1=index===1?'комфорт':'физ лица';data.benefitLabel2=index===1?'электро':'ип';[data.heading,data.description,data.benefit]=presetCopy[index];Object.assign(data,templateCopyDrafts.value[index] || {});restoreFraming()}
 
 function notify(message:string){toast.value=message;setTimeout(()=>toast.value='',3500)}
 function resetPhotoCrop(){
@@ -184,6 +192,7 @@ function currentProject(){
 }
 async function openProject(project:any){
  const validated=validateProject(project)
+ rememberTemplateCopy()
  Object.assign(data,structuredClone(defaults),validated.data);preset.value=validated.preset;formatIndex.value=validated.format;selected.value='';settingsTab.value='Canvas'
  await nextTick();previewCanvas.value?.fitText()
  return currentProject()
