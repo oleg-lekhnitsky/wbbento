@@ -48,7 +48,7 @@ button:not(:disabled),summary{cursor:pointer}
 .below-canvas{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted-foreground);font-size:10px}
 .below-canvas>span:first-child{display:flex;align-items:center;gap:5px}
 .below-canvas>span:last-child{font-variant-numeric:tabular-nums;font-size:9px}
-.canvas-bottom{height:52px;min-height:52px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;border-top:1px solid var(--border);background:var(--background);gap:8px}
+.canvas-bottom{height:52px;min-height:52px;display:flex;justify-content:flex-end;align-items:center;padding:0 20px;border-top:1px solid var(--border);background:var(--background);gap:8px}
 .canvas-hint{font-size:10px;color:var(--muted-foreground)}
 .zoom-control{display:flex;align-items:center;gap:4px;padding:2px;border:1px solid var(--border);border-radius:999px;background:var(--background)}
 .zoom-control>span{width:38px;text-align:center;font-variant-numeric:tabular-nums;font-size:11px;color:var(--muted-foreground)}

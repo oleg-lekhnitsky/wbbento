@@ -29,7 +29,7 @@ async function copy(){
 <template>
  <UiCollapsible class="driver-prompt">
   <UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Sparkles class="size-4"/><span>Создать фото водителя</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content">
-  <p class="muted">Выберите образец, укажите возраст и национальность, затем скопируйте промпт в генератор изображений.</p>
+  <p class="muted">Выберите референс, укажите возраст и национальность, затем скопируйте промпт в генератор изображений.</p>
   <div class="two-fields">
    <label>Возраст<UiInput type="number" min="18" max="55" placeholder="Например, 35" :model-value="modelValue.age" @update:model-value="value=>update('age',String(value))"/></label>
    <label>Национальность<UiInput placeholder="Например, узбек" :model-value="modelValue.nationality" @update:model-value="value=>update('nationality',String(value))"/></label>

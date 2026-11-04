@@ -6,7 +6,7 @@ import {Input as UiInput} from '~/components/ui/input'
 import {Textarea as UiTextarea} from '~/components/ui/textarea'
 import {Collapsible,CollapsibleTrigger,CollapsibleContent} from '~/components/ui/collapsible'
 import {Sparkles,ChevronDown,Copy,Upload,Check} from '@lucide/vue'
-import {createChatGptBrief,parseChatGptResult,applyChatGptImages,publicReferenceUrl,REFERENCE_SITE_ORIGIN} from '~/lib/chatgpt-exchange.mjs'
+import {createChatGptBrief,parseChatGptResult,applyChatGptImages,REFERENCE_SITE_ORIGIN} from '~/lib/chatgpt-exchange.mjs'
 import angles from '~/data/car-references.json'
 import {formatIds,formats} from '~/lib/bento-project.mjs'
 import {driverPhotoStyles,carStreets,carTimes} from '~/lib/image-prompts.mjs'
@@ -14,7 +14,7 @@ const props=defineProps<{project:any}>()
 const emit=defineEmits<{apply:[project:any]}>()
 const opened=ref(false),request=ref(''),imageMode=ref('keep'),age=ref(props.project.data.imagePrompt.age),nationality=ref(props.project.data.imagePrompt.nationality)
 const resultText=ref(''),status=ref(''),showBrief=ref(false),briefField=ref<any>(),pending=shallowRef<any>(),uploads=ref<Record<string,string>>({}),kept=ref<string[]>([]),busy=ref(false)
-const changeOptions=[{id:'copy',label:'Текст и язык'},{id:'cities',label:'Города'},{id:'offer',label:'Предложение и метки'},{id:'partner',label:'Данные партнёра'},{id:'format',label:'Размер баннера'}]
+const changeOptions=[{id:'copy',label:'Текст и язык'},{id:'cities',label:'Города'},{id:'offer',label:'Условия и преимущества'},{id:'partner',label:'Данные партнёра'},{id:'format',label:'Размер баннера'}]
 const step=ref(1),flowContent=ref<any>()
 const steps=['Изменения','ChatGPT','Импорт']
 async function goStep(value:number){
@@ -70,7 +70,7 @@ async function copyBrief(){
  copied.value=false;clearTimeout(copiedTimer);preparingBrief.value=true
  try{
   const text=await prepareBrief()
-  try{await navigator.clipboard.writeText(text);copied.value=true;copiedTimer=setTimeout(()=>copied.value=false,2500);status.value='Промпт скопирован. Вставьте его в ChatGPT и при необходимости прикрепите образец.'}
+  try{await navigator.clipboard.writeText(text);copied.value=true;copiedTimer=setTimeout(()=>copied.value=false,2500);status.value='Промпт скопирован. Вставьте его в ChatGPT и при необходимости прикрепите референс.'}
   catch{showBrief.value=true;await nextTick();briefField.value?.$el?.select();status.value='Скопируйте промпт ниже или скачайте текстовый файл.'}
  }catch(error){status.value=uiError(error)}finally{preparingBrief.value=false}
 }
@@ -79,7 +79,14 @@ async function downloadBrief(){
  try{const text=await prepareBrief(),url=URL.createObjectURL(new Blob([text],{type:'text/plain'}));const link=document.createElement('a');link.href=url;link.download='wb-bento-chatgpt-brief.txt';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(error){status.value=uiError(error)}finally{preparingBrief.value=false}
 }
 
-async function copyReference(){try{await copyReferenceImage(reference.value);status.value='Образец скопирован. Вставьте его в тот же чат ChatGPT.'}catch{status.value='Не удалось скопировать образец. Скачайте его по ссылке ниже.'}}
+const copyingReference=ref(false),referenceCopied=ref(false)
+watch(reference,()=>{referenceCopied.value=false;status.value=''})
+async function copyReference(){
+ copyingReference.value=true;referenceCopied.value=false;status.value=''
+ try{await copyReferenceImage(reference.value);referenceCopied.value=true;status.value='Референс скопирован. Вставьте его в тот же чат ChatGPT.'}
+ catch(error){console.warn('Reference clipboard failed',error);status.value=error instanceof Error?error.message:'Не удалось скопировать референс. Скачайте его ниже.'}
+ finally{copyingReference.value=false}
+}
 async function review(){
  try{
   pending.value=parseChatGptResult(resultText.value,props.project);uploads.value={};kept.value=[]
@@ -117,7 +124,7 @@ function apply(){try{const project=applyChatGptImages(pending.value,uploads.valu
    <fieldset class="exchange-changes"><legend>Что вы хотите изменить?</legend><div class="exchange-change-options"><UiButton v-for="option in changeOptions" :key="option.id" variant="outline" size="sm" :aria-pressed="selectedChanges.includes(option.id)" @click="toggleChange(option.id)"><Check v-if="selectedChanges.includes(option.id)" class="size-3"/>{{option.label}}</UiButton></div></fieldset>
    <label v-if="selectedChanges.includes('copy')">Язык · необязательно<UiInput v-model="language" placeholder="Например, армянский, русский, узбекский"/><span class="field-hint">Переписать заголовок и дополнительный текст. Оставьте пустым, чтобы сохранить язык.</span></label>
    <div v-if="selectedChanges.includes('cities')" class="city-field"><span>Города на баннере</span><CityChips v-model="cities"/><span class="field-hint">Названия обновятся и в тексте.</span></div>
-   <label v-if="selectedChanges.includes('offer')">Новое предложение или метки<UiTextarea v-model="offer" rows="3" placeholder="Ежедневные выплаты, аренда от 150 000 сум/день, комфорт и электро…"/><span class="field-hint">Заголовок и дополнительный текст будут адаптированы под предложение.</span></label>
+   <label v-if="selectedChanges.includes('offer')">Условия и преимущества<UiTextarea v-model="offer" rows="3" placeholder="Ежедневные выплаты, аренда от 150 000 сум/день, комфорт и электро…"/><span class="field-hint">Заголовок и дополнительный текст будут адаптированы под указанные условия и преимущества.</span></label>
    <template v-if="selectedChanges.includes('partner')"><label>Новое название партнёра<UiInput v-model="partner"/></label><label>Новый сайт<UiInput v-model="website"/></label><label>Новый номер телефона<UiInput v-model="phone"/></label></template>
    <label v-if="selectedChanges.includes('format')">Новый размер баннера<StudioSelect v-model="targetFormat" label="Новый размер баннера" :options="formats.map((f,i)=>({value:formatIds[i],label:uiName(f.name)+' · '+f.w+' × '+f.h}))"/></label>
    <label>Что-то ещё? · необязательно<UiTextarea v-model="request" placeholder="Например, дружелюбный тон для опытных водителей" rows="2"/></label>
@@ -125,20 +132,19 @@ function apply(){try{const project=applyChatGptImages(pending.value,uploads.valu
    </section>
    <section v-show="step===2" id="generation-step-2" class="exchange-step" aria-label="Копирование в ChatGPT">
    <p class="muted">Скопируйте промпт в ChatGPT, выберите вариант и вернитесь с его JSON.</p>
-   <label>Новое фото<StudioSelect v-model="imageMode" label="Новое фото" :options="[{value:'keep',label:'Сохранить текущие изображения'},{value:'driver',label:'Создать фото водителя'},{value:'car',label:'Создать фото машины в движении по образцу'}]"/></label>
+   <label>Новое фото<StudioSelect v-model="imageMode" label="Новое фото" :options="[{value:'keep',label:'Сохранить текущие изображения'},{value:'driver',label:'Создать фото водителя'},{value:'car',label:'Создать фото машины в движении по референсу'}]"/></label>
    <p v-if="imageMode==='car'" class="muted">Переносит выбранный автомобиль в новую уличную сцену с сохранением машины и оформления WB.</p>
    <p class="exchange-result-hint muted">{{imageMode==='keep'?'Вы получите обновлённый JSON баннера. Изображения останутся прежними.':'Сначала вы получите JSON баннера. Перед созданием фото ChatGPT спросит подтверждение.'}}</p>
    <div v-if="imageMode==='driver'" class="two-fields"><label>Возраст<UiInput v-model="age" type="number" min="18" max="55" placeholder="35"/></label><label>Национальность<UiInput v-model="nationality" placeholder="Армянин"/></label></div>
-   <div v-if="imageMode==='driver'" class="prompt-options" role="group" aria-label="Образцы фото водителя"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="driverStyle===style.id" @click="driverStyle=style.id"><img :src="'/assets/figma/'+style.image+'.png'" alt=""/><span>{{uiName(style.id)}}</span></UiButton></div>
-   <div v-if="imageMode==='car'" class="prompt-options exchange-car-references" role="group" aria-label="Образцы автомобилей"><UiButton v-for="angle in angles" :key="angle.id" variant="ghost" :aria-pressed="carAngle===angle.id" @click="carAngle=angle.id"><img :src="angle.src" alt=""/><span>{{uiName(angle.id)}}</span></UiButton></div>
+   <div v-if="imageMode==='driver'" class="prompt-options" role="group" aria-label="Референсы фото водителя"><UiButton v-for="style in driverPhotoStyles" :key="style.id" variant="ghost" :aria-pressed="driverStyle===style.id" @click="driverStyle=style.id"><img :src="'/assets/figma/'+style.image+'.png'" alt=""/><span>{{uiName(style.id)}}</span></UiButton></div>
+   <div v-if="imageMode==='car'" class="prompt-options exchange-car-references" role="group" aria-label="Референсы автомобилей"><UiButton v-for="angle in angles" :key="angle.id" variant="ghost" :aria-pressed="carAngle===angle.id" @click="carAngle=angle.id"><img :src="angle.src" alt=""/><span>{{uiName(angle.id)}}</span></UiButton></div>
    <template v-if="imageMode==='car'">
     <label>Фон улицы<StudioSelect v-model="carStreet" label="Фон улицы" :options="carStreets.map(street=>({value:street.id,label:uiName(street.id)}))"/></label>
     <label>Время суток<StudioSelect v-model="carTime" label="Время суток" :options="carTimes.map(time=>({value:time.id,label:uiName(time.id)}))"/></label>
     <label>Город или место · необязательно<UiInput v-model="carLocation" placeholder="Например, Ташкент"/></label>
    </template>
-   <p v-if="imageMode!=='keep'" class="muted">Промпт содержит все образцы фото водителя и все ракурсы автомобиля: тёплый направленный солнечный свет и городской фон без деревьев. {{publicReferenceUrl(siteOrigin,reference)?'В промпте есть публичные ссылки на образцы. Для точного соответствия скопируйте выбранное изображение и прикрепите его вместе с промптом.':'Прикрепите образец в ChatGPT: локальные ссылки недоступны из чата.'}}</p>
-   <div class="reference-copy-actions"><UiButton :disabled="preparingBrief" @click="copyBrief"><Check v-if="copied" class="size-4"/><Copy v-else class="size-4"/>{{preparingBrief?'Подготовка…':copied?'Скопировано':'Скопировать для ChatGPT'}}</UiButton><UiButton variant="outline" :disabled="preparingBrief" @click="downloadBrief">Скачать промпт</UiButton><UiButton v-if="imageMode!=='keep'" variant="outline" @click="copyReference">Скопировать образец</UiButton><UiButton variant="ghost" size="sm"  :disabled="preparingBrief" @click="toggleBrief">{{showBrief?'Скрыть промпт':'Показать промпт'}}</UiButton></div>
-   <a v-if="imageMode!=='keep'" class="car-reference-download" :href="reference" download>Скачать образец</a>
+   <div class="reference-copy-actions"><UiButton :disabled="preparingBrief" @click="copyBrief"><Check v-if="copied" class="size-4"/><Copy v-else class="size-4"/>{{preparingBrief?'Подготовка…':copied?'Скопировано':'Скопировать промпт'}}</UiButton><UiButton variant="outline" :disabled="preparingBrief" @click="downloadBrief">Скачать промпт</UiButton><UiButton v-if="imageMode!=='keep'" variant="outline" :disabled="copyingReference" @click="copyReference"><Check v-if="referenceCopied" class="size-4"/>{{copyingReference?'Копирование…':referenceCopied?'Референс скопирован':'Скопировать референс'}}</UiButton><UiButton variant="ghost" size="sm"  :disabled="preparingBrief" @click="toggleBrief">{{showBrief?'Скрыть промпт':'Показать промпт'}}</UiButton></div>
+   <a v-if="imageMode!=='keep'" class="car-reference-download" :href="reference" download>Скачать референс</a>
    <label v-if="showBrief">Промпт для генерации<UiTextarea class="prompt-preview" ref="briefField" :model-value="brief" readonly rows="8"/></label>
    <div class="exchange-step-actions"><UiButton variant="ghost" @click="goStep(1)">Назад</UiButton><UiButton variant="outline" @click="goStep(3)">У меня есть результат</UiButton></div>
    </section>
@@ -157,7 +163,7 @@ function apply(){try{const project=applyChatGptImages(pending.value,uploads.valu
     </div>
    <div class="exchange-step-actions"><UiButton variant="ghost" @click="goStep(2)">Назад</UiButton></div>
    </section>
-   <p role="status" aria-live="polite">{{status}}</p>
+   <p v-if="status" role="status" aria-live="polite">{{status}}</p>
   </CollapsibleContent>
  </Collapsible>
 </template>

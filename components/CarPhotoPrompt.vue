@@ -24,11 +24,11 @@ async function copy(){try{await navigator.clipboard.writeText(prompt.value);stat
 <template>
  <UiCollapsible class="driver-prompt car-prompt">
   <UiCollapsibleTrigger as-child><UiButton variant="ghost" class="prompt-trigger"><Sparkles class="size-4"/><span>Создать фото машины в движении</span><ChevronDown class="prompt-chevron size-4"/></UiButton></UiCollapsibleTrigger><UiCollapsibleContent class="prompt-content">
-  <p class="muted">Выберите ракурс машины и улицу, затем скопируйте образец и промпт.</p>
+  <p class="muted">Выберите ракурс машины и улицу, затем скопируйте референс и промпт.</p>
   <div class="prompt-options" role="group" aria-label="Ракурс автомобиля">
    <UiButton variant="ghost" v-for="angle in angles" :key="angle.id" type="button" :aria-pressed="chosen.id===angle.id" @click="update('angle',angle.id)"><img :src="angle.src" alt=""/><span>{{uiName(angle.id)}}</span></UiButton>
   </div>
-  <a class="car-reference-download muted" :href="chosen.src" :download="'wb-taxi-'+chosen.id+'.png'"><Download class="size-3.5"/>Скачать образец</a>
+  <a class="car-reference-download muted" :href="chosen.src" :download="'wb-taxi-'+chosen.id+'.png'"><Download class="size-3.5"/>Скачать референс</a>
   <label>Фон улицы<StudioSelect label="Фон улицы" :model-value="modelValue.street" :options="streets.map(street=>({value:street.id,label:uiName(street.id)}))" @update:model-value="value=>update('street',value)"/></label>
   <label>Время суток<StudioSelect label="Время суток" :model-value="modelValue.time || 'sunset'" :options="carTimes.map(time=>({value:time.id,label:uiName(time.id)}))" @update:model-value="value=>update('time',value)"/></label>
   <label>Город или место · необязательно<UiInput :model-value="modelValue.location" placeholder="Например, Ташкент" @update:model-value="value=>update('location',String(value))"/></label>
