@@ -18,7 +18,7 @@ import { ToggleGroup as UiToggleGroup, ToggleGroupItem as UiToggleGroupItem } fr
 import { Slider as UiSlider } from '~/components/ui/slider'
 import { Switch as UiSwitch } from '~/components/ui/switch'
 import { Download, Save, Plus, Minus, Layers2, Settings2, Upload, Check, MousePointer2, LoaderCircle, Sparkles, ShieldCheck, Code2, CircleHelp } from '@lucide/vue'
-import { toPng } from 'html-to-image'
+import {exportBannerPng} from '~/lib/export-png'
 import {parseChatGptResult} from '~/lib/chatgpt-exchange.mjs'
 import { normalizeVehicleAsset, defaults, formats, presets, presetCopy, presetAssets, presetStyles, createProject, updateProject, validateProject, listLayouts, assetPlacementReset } from '~/lib/bento-project.mjs'
 
@@ -181,7 +181,7 @@ async function renderProjectPng(){
   previewCanvas.value?.fitText();await nextTick()
   const node=artboard.value
   const bounds=node.getBoundingClientRect()
-  return await toPng(node,{width:bounds.width,height:bounds.height,canvasWidth:format.value.w,canvasHeight:format.value.h,pixelRatio:1,cacheBust:true})
+  return await exportBannerPng(node,{width:bounds.width,height:bounds.height,canvasWidth:format.value.w,canvasHeight:format.value.h,pixelRatio:1,cacheBust:true})
  }finally{selected.value=previousSelection}
 }
 async function download(){exporting.value=true;try{const url=await renderProjectPng();const a=document.createElement('a');a.download=`wb-bento-${format.value.w}x${format.value.h}.png`;a.href=url;a.click();notify('Баннер готов')}catch{notify('Не удалось экспортировать. Проверьте доступность всех изображений.')}finally{exporting.value=false}}
